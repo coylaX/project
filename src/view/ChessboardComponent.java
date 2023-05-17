@@ -116,6 +116,15 @@ public class ChessboardComponent extends JComponent {
             }
         }
     }
+    public void removeAllPieces(){
+        for (int i = 0; i < CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < CHESSBOARD_COL_SIZE.getNum(); j++) {
+                if(gridComponents[i][j].getComponents().length>0){
+                    removeChessComponentAtGrid(new ChessboardPoint(i,j));
+                }
+            }
+        }
+    }
 
     public void registerController(GameController gameController) {
         this.gameController = gameController;

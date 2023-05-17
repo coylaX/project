@@ -91,4 +91,11 @@ public class GameController implements GameListener {
         }
         // TODO: Implement capture function
     }
+    public void restartGame(){//view里有需要这个方法的地方
+        model.removeAllPieces();//model中清除所有棋子
+        model.initPieces();//model中添加初始化棋子
+        view.removeAllPieces();//view中清除所有绘制过的棋子
+        view.initiateChessComponent(model);//view中根据现阶段model的内容重新add棋子
+        view.repaint();//
+    }
 }
