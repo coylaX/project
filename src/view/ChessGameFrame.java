@@ -4,11 +4,14 @@ import controller.GameController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import controller.GameController.*;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  */
-public class ChessGameFrame extends JFrame {
+public class ChessGameFrame extends JFrame implements ActionListener{
     //    public final Dimension FRAME_SIZE ;
     private final int WIDTH;
     private final int HEIGTH;
@@ -17,6 +20,8 @@ public class ChessGameFrame extends JFrame {
 
     private int count;
     private ChessboardComponent chessboardComponent;
+    private GameController controller;
+    JButton restartButton = new JButton("Restart");
     public ChessGameFrame(int width, int height) {
         setTitle("斗兽棋"); //设置标题
         this.WIDTH = width;
@@ -80,13 +85,22 @@ public class ChessGameFrame extends JFrame {
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
      */
     private void addRestartButton() {
-        JButton button = new JButton("Restart");
-        button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Hello, world!"));
-        button.setLocation(HEIGTH, HEIGTH / 10 + 120);
-        button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
-        add(button);
+        restartButton.addActionListener(this);
+        // button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Hello, world!"));
+        restartButton.setLocation(HEIGTH, HEIGTH / 10 + 120);
+        restartButton.setSize(200, 60);
+        restartButton.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(restartButton);
     }
+    //监听是哪个按钮
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source=e.getSource();
+        if(source ==restartButton){
+            controller.restartGame();
+        }
+    }
+
     public void moveHints(){
         JOptionPane.showMessageDialog(this,"步骤违规，请重试！");
     }
@@ -143,5 +157,9 @@ public class ChessGameFrame extends JFrame {
         JLabel winJLabel=new JLabel(new ImageIcon("CS109-2023-Sping-ChessDemo\\Imagine\\Victory.png"));
         winJLabel.setBounds(203,183,597,373);
         this.getContentPane().add(winJLabel);
+    }
+
+    public void setGameController(GameController gameController) {
+        this.controller=gameController;
     }
 }
