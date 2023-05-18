@@ -98,6 +98,7 @@ public class ChessGameFrame extends JFrame implements ActionListener{
         Object source=e.getSource();
         if(source ==restartButton){
             controller.restartGame();
+            JOptionPane.showMessageDialog(this, "游戏已重置！");
         }
     }
 
