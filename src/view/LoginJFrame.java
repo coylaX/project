@@ -188,18 +188,18 @@ public class LoginJFrame extends JFrame implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == login) {
-            login.setIcon(new ImageIcon("D:\\programing\\java\\CS109-2023-Sping-ChessDemo\\Imagine\\Login\\登录按下.png"));
+            login.setIcon(new ImageIcon("Imagine\\Login\\登录按下.png"));
         } else if (e.getSource() == register) {
-            register.setIcon(new ImageIcon("D:\\programing\\java\\CS109-2023-Sping-ChessDemo\\Imagine\\Login\\注册按下.png"));
+            register.setIcon(new ImageIcon("Imagine\\Login\\注册按下.png"));
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         if(e.getSource()==login){
-            login.setIcon(new ImageIcon("D:\\programing\\java\\CS109-2023-Sping-ChessDemo\\Imagine\\Login\\登录按钮.png"));
+            login.setIcon(new ImageIcon("Imagine\\Login\\登录按钮.png"));
         }else if (e.getSource()==register){
-            register.setIcon(new ImageIcon("D:\\programing\\java\\CS109-2023-Sping-ChessDemo\\Imagine\\Login\\注册按钮.png"));
+            register.setIcon(new ImageIcon("Imagine\\Login\\注册按钮.png"));
         }
     }
 

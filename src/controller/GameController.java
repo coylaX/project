@@ -135,4 +135,8 @@ public class GameController implements GameListener {
         view.initiateChessComponent(model);//view中根据现阶段model的内容重新add棋子
         view.repaint();//
     }
+
+    public PlayerColor getCurrentPlayer() {
+        return currentPlayer;
+    }
 }

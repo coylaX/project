@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import controller.GameController.*;
+import model.PlayerColor;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -66,6 +67,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     /**
      * 在游戏面板中添加标签
      */
+    //TODO：如何保持数据一直更新？？？回合数和回合对象
     public void setStepLabel() {
         JLabel statusLabel = new JLabel("回合数: " + count);
         statusLabel.setLocation(HEIGTH + 40, HEIGTH / 10);
@@ -76,12 +78,23 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         add(statusLabel);
     }
 
-    //显示currentPlayer
-    public void addPlayerLabel() {
-
-    }
     //在controller中设置count回合数
+    // 显示currentPlayer
+    public void addCurrentPlayer(){
+        JLabel playerLabel = new JLabel("当前回合:蓝方");
+        playerLabel.setLocation(HEIGTH + 40, HEIGTH / 20);
+        playerLabel.setSize(200, 60);
+        playerLabel.setFont(new Font("楷体", Font.BOLD, 25));
+        playerLabel.setText(String.format("%s%s","当前回合：","红方"));
+        add(playerLabel);
+    }
+    public void viewCurrentPlayer(){
+        if(controller.getCurrentPlayer()== PlayerColor.BLUE){
 
+        }else if(controller.getCurrentPlayer()==PlayerColor.RED){
+
+        }
+    }
 
     /**
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
@@ -133,6 +146,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
 
         JMenuItem ruleItem = new JMenuItem("规则");
         JMenuItem flagItem = new JMenuItem("标志说明");
+        JMenuItem aboutItem = new JMenuItem("制作人员");
 
         functionJMenu.add(replayItem);
         functionJMenu.add(reLoginItem);
@@ -140,6 +154,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
 
         aboutJMenu.add(ruleItem);
         aboutJMenu.add(flagItem);
+        aboutJMenu.add(aboutItem);
 
         jMenuBar.add(functionJMenu);
         jMenuBar.add(aboutJMenu);
@@ -148,14 +163,32 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         this.setVisible(true);
 
         replayItem.addActionListener((e) -> {
+            System.out.println("重置游戏");
             JOptionPane.showMessageDialog(this, "游戏已重置！");
             controller.restartGame();
+        });
+        reLoginItem.addActionListener((e)->{
+            System.out.println("重新登陆");
+            //关闭界面
+            this.setVisible(false);
+            //打开登陆界面
+            new LoginJFrame();
+        });
+        closeItem.addActionListener((e)->{
+            System.out.println("关闭游戏");
+            //直接关闭虚拟机
+            System.exit(0);
+        });
+
+        ruleItem.addActionListener((e)->{
+            System.out.println("打开说明");
+            //TODO：如何打开本地文件
         });
     }
 
     //在GameController中的Win（）执行
     private void addWinLabel() {
-        JLabel winJLabel = new JLabel(new ImageIcon("CS109-2023-Sping-ChessDemo\\Imagine\\Victory.png"));
+        JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
         winJLabel.setBounds(203, 183, 597, 373);
         this.getContentPane().add(winJLabel);
     }
@@ -170,6 +203,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == restartButton) {
+            System.out.println("重置游戏");
             controller.restartGame();
             JOptionPane.showMessageDialog(this, "游戏已重置！");
         }
