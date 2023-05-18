@@ -134,6 +134,7 @@ public class GameController implements GameListener {
         view.removeAllPieces();//view中清除所有绘制过的棋子
         view.initiateChessComponent(model);//view中根据现阶段model的内容重新add棋子
         view.repaint();//
+        this.currentPlayer = PlayerColor.BLUE;
     }
 
     public PlayerColor getCurrentPlayer() {
