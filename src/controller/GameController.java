@@ -53,7 +53,11 @@ public class GameController implements GameListener {
 
     private boolean win() {
         // TODO: Check the board if there is a winner
-        return false;
+        boolean b = false;
+        if(model.isBLUEWin()|| model.isREDWin())
+            b = true;
+        return b;
+
     }
 
 

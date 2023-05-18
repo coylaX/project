@@ -168,7 +168,7 @@ public class Chessboard {
         // TODO:Fix this method
         boolean b = false;
         if(getChessPieceOwner(src)!=getChessPieceOwner(dest)){
-            if(getChessPieceAt(src).rank>getChessPieceAt(dest).rank
+            if(getChessPieceAt(src).rank>=getChessPieceAt(dest).rank
                     &&(!(getChessPieceAt(src).rank==8&&getChessPieceAt(dest).rank==1)))
                 b = true;
             if(getChessPieceAt(src).rank==1&&getChessPieceAt(dest).rank==8&& !src.isRiver())
@@ -181,6 +181,33 @@ public class Chessboard {
 
 
         return b;
+    }
+
+    public boolean isBLUEWin(){
+        boolean b = true;
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                if(grid[i][j].getPiece()!=null&&grid[i][j].getPiece().getOwner()==PlayerColor.RED)
+                    b = false;
+            }
+        }
+        boolean bb = false;
+        if(grid[0][3].getPiece()!=null&&grid[0][3].getPiece().getOwner()==PlayerColor.BLUE)
+            bb = true;
+        return b||bb;
+    }
+    public boolean isREDWin(){
+        boolean b = true;
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                if(grid[i][j].getPiece()!=null&&grid[i][j].getPiece().getOwner()==PlayerColor.BLUE)
+                    b = false;
+            }
+        }
+        boolean bb = false;
+        if(grid[8][3].getPiece()!=null&&grid[0][3].getPiece().getOwner()==PlayerColor.RED)
+            bb = true;
+        return b||bb;
     }
 
 }
