@@ -6,12 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import controller.GameController.*;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  */
-public class ChessGameFrame extends JFrame implements ActionListener{
+public class ChessGameFrame extends JFrame implements ActionListener {
     //    public final Dimension FRAME_SIZE ;
     private final int WIDTH;
     private final int HEIGTH;
@@ -22,6 +23,7 @@ public class ChessGameFrame extends JFrame implements ActionListener{
     private ChessboardComponent chessboardComponent;
     private GameController controller;
     JButton restartButton = new JButton("Restart");
+
     public ChessGameFrame(int width, int height) {
         setTitle("斗兽棋"); //设置标题
         this.WIDTH = width;
@@ -57,7 +59,7 @@ public class ChessGameFrame extends JFrame implements ActionListener{
      */
     private void addChessboard() {
         chessboardComponent = new ChessboardComponent(ONE_CHESS_SIZE);
-        chessboardComponent.setLocation(WIDTH / 5, HEIGTH / 10-ONE_CHESS_SIZE/2);
+        chessboardComponent.setLocation(WIDTH / 5, HEIGTH / 10 - ONE_CHESS_SIZE / 2);
         add(chessboardComponent);
     }
 
@@ -65,17 +67,17 @@ public class ChessGameFrame extends JFrame implements ActionListener{
      * 在游戏面板中添加标签
      */
     public void setStepLabel() {
-        JLabel statusLabel = new JLabel("回合数: "+count);
-        statusLabel.setLocation(HEIGTH+40, HEIGTH / 10);
+        JLabel statusLabel = new JLabel("回合数: " + count);
+        statusLabel.setLocation(HEIGTH + 40, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("楷体", Font.BOLD, 25));
         //每次增加回合了救引用这个方法
-        statusLabel.setText(String.format("%s%d","回合数: ",++count));
+        statusLabel.setText(String.format("%s%d", "回合数: ", ++count));
         add(statusLabel);
     }
 
     //显示currentPlayer
-    public void addPlayerLabel(){
+    public void addPlayerLabel() {
 
     }
     //在controller中设置count回合数
@@ -92,19 +94,11 @@ public class ChessGameFrame extends JFrame implements ActionListener{
         restartButton.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(restartButton);
     }
-    //监听是哪个按钮
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Object source=e.getSource();
-        if(source ==restartButton){
-            controller.restartGame();
-            JOptionPane.showMessageDialog(this, "游戏已重置！");
-        }
+
+    public void moveHints() {
+        JOptionPane.showMessageDialog(this, "步骤违规，请重试！");
     }
 
-    public void moveHints(){
-        JOptionPane.showMessageDialog(this,"步骤违规，请重试！");
-    }
     private void addLoadButton() {
         JButton button = new JButton("Load");
         button.setLocation(HEIGTH, HEIGTH / 10 + 240);
@@ -117,7 +111,8 @@ public class ChessGameFrame extends JFrame implements ActionListener{
 //            String path = JOptionPane.showInputDialog(this,"Input Path here");
 //            gameController.loadGameFromFile(path);
 //        });
-   }
+    }
+
     private void addSaveButton() {
         JButton button = new JButton("Save");
         button.setLocation(HEIGTH, HEIGTH / 10 + 360);
@@ -126,8 +121,8 @@ public class ChessGameFrame extends JFrame implements ActionListener{
         add(button);
     }
 
-    private void addJMenu(){
-        JMenuBar jMenuBar=new JMenuBar();
+    private void addJMenu() {
+        JMenuBar jMenuBar = new JMenuBar();
 
         JMenu functionJMenu = new JMenu("功能");
         JMenu aboutJMenu = new JMenu("说明");
@@ -151,16 +146,32 @@ public class ChessGameFrame extends JFrame implements ActionListener{
 
         this.setJMenuBar(jMenuBar);
         this.setVisible(true);
+
+        replayItem.addActionListener((e) -> {
+            JOptionPane.showMessageDialog(this, "游戏已重置！");
+            controller.restartGame();
+        });
     }
 
     //在GameController中的Win（）执行
-    private void addWinLabel(){
-        JLabel winJLabel=new JLabel(new ImageIcon("CS109-2023-Sping-ChessDemo\\Imagine\\Victory.png"));
-        winJLabel.setBounds(203,183,597,373);
+    private void addWinLabel() {
+        JLabel winJLabel = new JLabel(new ImageIcon("CS109-2023-Sping-ChessDemo\\Imagine\\Victory.png"));
+        winJLabel.setBounds(203, 183, 597, 373);
         this.getContentPane().add(winJLabel);
     }
 
     public void setGameController(GameController gameController) {
-        this.controller=gameController;
+        this.controller = gameController;
+    }
+
+
+    //监听是哪个按钮
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source == restartButton) {
+            controller.restartGame();
+            JOptionPane.showMessageDialog(this, "游戏已重置！");
+        }
     }
 }
