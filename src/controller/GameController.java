@@ -82,18 +82,32 @@ public class GameController implements GameListener {
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {
-        if (selectedPoint == null) {
+        if (selectedPoint == null) {//当前所选的格子没有棋子
             if (model.getChessPieceOwner(point).equals(currentPlayer)) {
                 selectedPoint = point;
                 component.setSelected(true);
                 component.repaint();
             }
-        } else if (selectedPoint.equals(point)) {
+        } else if (selectedPoint.equals(point)) {//当前所选格子与鼠标点击的格子相同
             selectedPoint = null;
             component.setSelected(false);
             component.repaint();
         }
         // TODO: Implement capture function
+        else if(selectedPoint!=null&&selectedPoint!=point&&model.isValidCapture(selectedPoint,point)){
+            model.getGrid()[point.getRow()][point.getCol()].removePiece();
+            view.removeChessComponentAtGrid(point);
+            //实体中移动棋子
+            model.moveChessPiece(selectedPoint, point);
+            //画面上移动棋子
+            view.setChessComponentAtGrid(point, view.removeChessComponentAtGrid(selectedPoint));
+            //归零
+            selectedPoint = null;
+            //切换棋手
+            swapColor();
+            //重绘制
+            view.repaint();
+        }
     }
     public void restartGame(){//view里有需要这个方法的地方
         model.removeAllPieces();//model中清除所有棋子
