@@ -27,7 +27,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
 
     public void initView(){
         //JLabel usernameText=new JLabel("用户名 "+":");
-        JLabel usernameText = new JLabel(new ImageIcon("D:\\programing\\java\\CS109-2023-Sping-ChessDemo\\Imagine\\Login\\用户名.png"));
+        JLabel usernameText = new JLabel(new ImageIcon("Imagine\\Login\\用户名.png"));
         usernameText.setBounds(33, 145, 47, 17);
         //getContentPane啥意思
         this.getContentPane().add(usernameText);
@@ -41,7 +41,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
         Font font=new Font("",Font.PLAIN,25);
         passwordText.setFont(font);
         passwordText.setForeground(Color.PINK);**/
-        JLabel passwordText = new JLabel(new ImageIcon("D:\\programing\\java\\CS109-2023-Sping-ChessDemo\\Imagine\\Login\\密码.png"));
+        JLabel passwordText = new JLabel(new ImageIcon("Imagine\\Login\\密码.png"));
         passwordText.setBounds(40, 205, 32, 16);
         this.getContentPane().add(passwordText);
 
@@ -51,7 +51,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
 
         //5.添加登录按钮
         login.setBounds(23, 235, 128, 47);
-        login.setIcon(new ImageIcon("D:\\programing\\java\\CS109-2023-Sping-ChessDemo\\Imagine\\Login\\登录按钮.png"));
+        login.setIcon(new ImageIcon("Imagine\\Login\\登录按钮.png"));
         //去除按钮的边框
         login.setBorderPainted(false);
         //去除按钮的背景
@@ -62,7 +62,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
 
         //6.添加注册按钮
         register.setBounds(164, 235, 128, 47);
-        register.setIcon(new ImageIcon("D:\\programing\\java\\CS109-2023-Sping-ChessDemo\\Imagine\\Login\\注册按钮.png"));
+        register.setIcon(new ImageIcon("Imagine\\Login\\注册按钮.png"));
         //去除按钮的边框
         register.setBorderPainted(false);
         //去除按钮的背景
@@ -73,7 +73,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
 
 
         //7.添加背景图片
-        JLabel background = new JLabel(new ImageIcon("D:\\programing\\java\\CS109-2023-Sping-ChessDemo\\Imagine\\Login.jpg"));
+        JLabel background = new JLabel(new ImageIcon("Imagine\\Login.jpg"));
         background.setBounds(0, -24, 600, 350);
         this.getContentPane().add(background);
     }
