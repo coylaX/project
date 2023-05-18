@@ -95,7 +95,7 @@ public class GameController implements GameListener {
         }
         // TODO: Implement capture function
         else if(selectedPoint!=null&&selectedPoint!=point&&model.isValidCapture(selectedPoint,point)){
-            //移除棋子
+            //model中移除棋子
             model.getGrid()[point.getRow()][point.getCol()].removePiece();
             //显示中移除棋子
             view.removeChessComponentAtGrid(point);
