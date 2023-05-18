@@ -61,4 +61,16 @@ public class ChessboardPoint {
         }
         return b;
     }
+    public boolean isRedTrap(){
+        boolean b = false;
+        if((this.row==0&&this.col==2)||(this.row==0&&this.col==4)||(this.row==1&&this.col==3))
+            b = true;
+        return b;
+    }
+    public boolean isBlueTrap(){
+        boolean b= false;
+        if((this.row==8&&this.col==2)||(this.row==8&&this.col==4)||(this.row==7&&this.col==3))
+            b = true;
+        return b;
+    }
 }

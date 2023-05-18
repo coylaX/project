@@ -98,7 +98,6 @@ public class Chessboard {
             throw new IllegalArgumentException("Illegal chess capture!");
         }
         // TODO: Finish the method.
-        removeChessPiece(dest);
         setChessPiece(dest,removeChessPiece(src));
     }
 
@@ -168,11 +167,18 @@ public class Chessboard {
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
         // TODO:Fix this method
         boolean b = false;
-        if(getChessPieceAt(src).rank>getChessPieceAt(dest).rank
-                &&(!(getChessPieceAt(src).rank==8&&getChessPieceAt(dest).rank==1)))
-            b = true;
-        if(getChessPieceAt(src).rank==1&&getChessPieceAt(dest).rank==8&& !src.isRiver())
-            b = true;
+        if(getChessPieceOwner(src)!=getChessPieceOwner(dest)){
+            if(getChessPieceAt(src).rank>getChessPieceAt(dest).rank
+                    &&(!(getChessPieceAt(src).rank==8&&getChessPieceAt(dest).rank==1)))
+                b = true;
+            if(getChessPieceAt(src).rank==1&&getChessPieceAt(dest).rank==8&& !src.isRiver())
+                b = true;
+            if(getChessPieceOwner(dest)==PlayerColor.RED&& dest.isBlueTrap())
+                b = true;
+            if(getChessPieceOwner(dest)==PlayerColor.BLUE&&dest.isRedTrap())
+                b = true;
+        }
+
 
         return b;
     }
