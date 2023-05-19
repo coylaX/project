@@ -150,6 +150,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         JMenuItem replayItem = new JMenuItem("重新游戏");
         JMenuItem reLoginItem = new JMenuItem("重新登陆");
         JMenuItem closeItem = new JMenuItem("关闭游戏");
+        JMenuItem musicItem = new JMenuItem("音乐播放");
 
         JMenuItem ruleItem = new JMenuItem("规则");
         JMenuItem flagItem = new JMenuItem("标志说明");
@@ -158,6 +159,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         functionJMenu.add(replayItem);
         functionJMenu.add(reLoginItem);
         functionJMenu.add(closeItem);
+        functionJMenu.add(musicItem);
 
         aboutJMenu.add(ruleItem);
         aboutJMenu.add(flagItem);
