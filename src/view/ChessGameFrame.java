@@ -81,20 +81,21 @@ public class ChessGameFrame extends JFrame implements ActionListener {
 
     //在controller中设置count回合数
     // 显示currentPlayer
-    public void addCurrentPlayer(){
+    public void addCurrentPlayer() {
         playerLabel.setLocation(HEIGTH + 40, HEIGTH / 20);
         playerLabel.setSize(200, 60);
         playerLabel.setFont(new Font("楷体", Font.BOLD, 25));
         add(playerLabel);
     }
-    public void viewCurrentPlayer(){
-        if(controller.win()){
-            playerLabel.setText(String.format("%s","游戏结束！"));
-        }else if(!controller.win()){
-            if(controller.getCurrentPlayer()== PlayerColor.BLUE){
-                playerLabel.setText(String.format("%s%s","当前回合：","蓝方"));
-            }else if(controller.getCurrentPlayer()==PlayerColor.RED){
-                playerLabel.setText(String.format("%s%s","当前回合：","红方"));
+
+    public void viewCurrentPlayer() {
+        if (controller.win()) {
+            playerLabel.setText(String.format("%s", "游戏结束！"));
+        } else if (!controller.win()) {
+            if (controller.getCurrentPlayer() == PlayerColor.BLUE) {
+                playerLabel.setText(String.format("%s%s", "当前回合：", "蓝方"));
+            } else if (controller.getCurrentPlayer() == PlayerColor.RED) {
+                playerLabel.setText(String.format("%s%s", "当前回合：", "红方"));
             }
         }
     }
@@ -170,20 +171,20 @@ public class ChessGameFrame extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "游戏已重置！");
             controller.restartGame();
         });
-        reLoginItem.addActionListener((e)->{
+        reLoginItem.addActionListener((e) -> {
             System.out.println("重新登陆");
             //关闭界面
             this.setVisible(false);
             //打开登陆界面
             new LoginJFrame();
         });
-        closeItem.addActionListener((e)->{
+        closeItem.addActionListener((e) -> {
             System.out.println("关闭游戏");
             //直接关闭虚拟机
             System.exit(0);
         });
 
-        ruleItem.addActionListener((e)->{
+        ruleItem.addActionListener((e) -> {
             System.out.println("打开说明");
             //TODO：如何打开本地文件
         });
@@ -192,7 +193,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     //在GameController中的Win（）执行
     public void blueWinDialog() {
         JDialog winDialog = new JDialog();
-        winDialog.setSize(650, 450);
+        winDialog.setSize(650, 350);
         //让弹框置顶
         winDialog.setAlwaysOnTop(true);
         //让弹框居中
@@ -200,38 +201,19 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         //弹框不关闭永远无法操作下面的界面
         winDialog.setModal(true);
 
-        JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
-        winJLabel.setBounds(0, 0, 650, 450);
-        winDialog.add(winJLabel);
+        JLabel winPlayerJLabel = new JLabel();
 
-        JLabel winPlayerJLabel=new JLabel("蓝方胜利！");
-        winPlayerJLabel.setBounds(550,30,100,20);
-        winDialog.add(winPlayerJLabel);
 
-        winDialog.setVisible(true);
-        /**JOptionPane.showMessageDialog(this, "Imagine\\Victory.png");
-        JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
-        winJLabel.setBounds(203, 183, 597, 373);
-        this.getContentPane().add(winJLabel);**/
-    }
+        winPlayerJLabel.setText("蓝方胜利！");
+        winPlayerJLabel.setFont(new Font("宋体", Font.BOLD, 30));
+        winPlayerJLabel.setForeground(Color.RED);
 
-    public void redWinDialog() {
-        JDialog winDialog = new JDialog();
-        winDialog.setSize(650, 550);
-        //让弹框置顶
-        winDialog.setAlwaysOnTop(true);
-        //让弹框居中
-        winDialog.setLocationRelativeTo(null);
-        //弹框不关闭永远无法操作下面的界面
-        winDialog.setModal(true);
+        Icon winJLabel = new ImageIcon("Imagine\\Victory.png");
+        winPlayerJLabel.setIcon(winJLabel);
 
-        JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
-        winJLabel.setBounds(0, 0, 650, 450);
-        winDialog.add(winJLabel);
+        winPlayerJLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        winPlayerJLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
 
-        JLabel winPlayerJLabel=new JLabel("红方胜利！");
-        winPlayerJLabel.setBounds(550,30,100,20);
-        winPlayerJLabel.setLocation(550,30);
         winDialog.add(winPlayerJLabel);
 
         winDialog.setVisible(true);
@@ -240,6 +222,38 @@ public class ChessGameFrame extends JFrame implements ActionListener {
          winJLabel.setBounds(203, 183, 597, 373);
          this.getContentPane().add(winJLabel);**/
     }
+
+    public void redWinDialog() {
+            JDialog winDialog = new JDialog();
+            winDialog.setSize(650, 350);
+            //让弹框置顶
+            winDialog.setAlwaysOnTop(true);
+            //让弹框居中
+            winDialog.setLocationRelativeTo(null);
+            //弹框不关闭永远无法操作下面的界面
+            winDialog.setModal(true);
+
+            JLabel winPlayerJLabel = new JLabel();
+
+
+            winPlayerJLabel.setText("红方胜利！");
+            winPlayerJLabel.setFont(new Font("宋体", Font.BOLD, 30));
+            winPlayerJLabel.setForeground(Color.RED);
+
+            Icon winJLabel = new ImageIcon("Imagine\\Victory.png");
+            winPlayerJLabel.setIcon(winJLabel);
+
+            winPlayerJLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+            winPlayerJLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+            winDialog.add(winPlayerJLabel);
+
+            winDialog.setVisible(true);
+            /**JOptionPane.showMessageDialog(this, "Imagine\\Victory.png");
+             JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
+             winJLabel.setBounds(203, 183, 597, 373);
+             this.getContentPane().add(winJLabel);**/
+        }
 
     public void setGameController(GameController gameController) {
         this.controller = gameController;

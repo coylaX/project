@@ -85,9 +85,9 @@ public class GameController implements GameListener {
                 // ？？？TODO: if the chess enter Dens or Traps and so on
                 if(win()){
                     if(model.isREDWin())
-                        frame.blueWinDialog();
-                    else if(model.isBLUEWin())
                         frame.redWinDialog();
+                    else if(model.isBLUEWin())
+                        frame.blueWinDialog();
                 }
             }else if(selectedPoint != null && !model.isValidMove(selectedPoint, point)){
                 frame.moveHints();
@@ -135,9 +135,9 @@ public class GameController implements GameListener {
                 view.repaint();
                 if(win()){
                     if(model.isREDWin())
-                        frame.blueWinDialog();
-                    else if(model.isBLUEWin())
                         frame.redWinDialog();
+                    else if(model.isBLUEWin())
+                        frame.blueWinDialog();
                 }
             }else if(selectedPoint!=null&&selectedPoint!=point&&!model.isValidCapture(selectedPoint,point)){
                 frame.moveHints();
