@@ -168,6 +168,7 @@ public class GameController implements GameListener {
         view.initiateChessComponent(model);//view中根据现阶段model的内容重新add棋子
         view.repaint();//
         this.currentPlayer = PlayerColor.BLUE;
+        frame.viewCurrentPlayer();
     }
 
     public PlayerColor getCurrentPlayer() {
