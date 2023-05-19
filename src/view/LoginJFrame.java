@@ -156,9 +156,6 @@ public class LoginJFrame extends JFrame implements MouseListener {
 
     public boolean contains(User userInfo){
         for (int i = 0; i < userList.size(); i++) {
-            System.out.println(userList.get(i).getUsername());
-            System.out.println(userList.get(i).getPassword());
-            System.out.println(i);
             if(userList.get(i).getUsername().equals(userInfo.getUsername()) && userList.get(i).getPassword().equals( userInfo.getPassword())) {
                 System.out.println("用户名和密码正确！");
                 return true;
@@ -169,8 +166,6 @@ public class LoginJFrame extends JFrame implements MouseListener {
     }
     public boolean examName(User userInfo){
         for (int i = 0; i < userList.size(); i++) {
-            System.out.println(userList.get(i).getUsername());
-            System.out.println(i);
             if(userList.get(i).getUsername().equals(userInfo.getUsername())) {
                 System.out.println("新建用户名");
                 return true;
