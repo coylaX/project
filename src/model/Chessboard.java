@@ -171,9 +171,7 @@ public class Chessboard {
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
         // TODO:Fix this method
         boolean b = false;
-        boolean bb = false;
-
-
+        boolean bb = false;//判断是否可移动
       if(getChessPieceAt(src).rank==7||getChessPieceAt(src).rank==6){//判断是否为能够跳河的动物
             if(src.isBesideRiver()){//判断是否在河边
                 if(src.getCol()== dest.getCol()){
