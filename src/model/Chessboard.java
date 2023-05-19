@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class store the real chess information.
  * The Chessboard has 9*7 cells, and each cell has a position for chess
@@ -229,6 +232,22 @@ public class Chessboard {
         if(grid[8][3].getPiece()!=null&&grid[8][3].getPiece().getOwner()==PlayerColor.RED)
             bb = true;
         return b||bb;
+    }
+
+
+
+    public List<ChessboardPoint> isPossibleMove(ChessboardPoint src){
+        List p = new ArrayList<ChessboardPoint>();
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                ChessboardPoint point =new ChessboardPoint(i,j);
+                if(isValidMove(src,point)||isValidCapture(src,point))
+                    p.add(point);
+            }
+        }
+        return p;
+
+
     }
 
 
