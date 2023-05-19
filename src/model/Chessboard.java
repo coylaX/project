@@ -235,9 +235,9 @@ public class Chessboard {
     }
 
 
-
-    public List<ChessboardPoint> isPossibleMove(ChessboardPoint src){
-        List p = new ArrayList<ChessboardPoint>();
+        //棋子合法移动的选择
+    public ArrayList<ChessboardPoint> isPossibleMove(ChessboardPoint src){
+        ArrayList p = new ArrayList<ChessboardPoint>();
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
                 ChessboardPoint point =new ChessboardPoint(i,j);
