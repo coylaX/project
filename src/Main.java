@@ -7,7 +7,8 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-       // SwingUtilities.invokeLater(() -> {
+       //这有啥用？
+        // SwingUtilities.invokeLater(() -> {
             LoginJFrame firstFrame=new LoginJFrame();
          // firstFrame.setVisible(true);
            /** ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);

@@ -8,6 +8,7 @@ import model.Chessboard;
 import model.ChessboardPoint;
 import view.CellComponent;
 import view.ChessComponent;
+import view.ChessGameFrame;
 import view.ChessboardComponent;
 
 /**
@@ -26,7 +27,7 @@ public class GameController implements GameListener {
 
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
-
+    private ChessGameFrame frame;
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
@@ -46,12 +47,17 @@ public class GameController implements GameListener {
         }
     }
 
+    public void setFrame(ChessGameFrame frame) {
+        this.frame = frame;
+    }
+
     // after a valid move swap the player
     private void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
+        frame.viewCurrentPlayer();
     }
-
-    private boolean win() {
+//改成了Public
+    public boolean win() {
         // TODO: Check the board if there is a winner
         boolean b = false;
         if(model.isBLUEWin()|| model.isREDWin())
@@ -77,6 +83,8 @@ public class GameController implements GameListener {
                 //重绘制
                 view.repaint();
                 // ？？？TODO: if the chess enter Dens or Traps and so on
+            }else if(selectedPoint != null && !model.isValidMove(selectedPoint, point)){
+                frame.moveHints();
             }
             //如果胜利弹出胜利窗口
             if(win()){
@@ -118,12 +126,13 @@ public class GameController implements GameListener {
                 swapColor();
                 //重绘制
                 view.repaint();
+            }else if(selectedPoint!=null&&selectedPoint!=point&&!model.isValidCapture(selectedPoint,point)){
+                frame.moveHints();
             }
-            //如果胜利弹出胜利窗口
-            if(win()){
-                if(model.isREDWin()){}
-                if(model.isBLUEWin()){}
-            }
+        }//如果胜利弹出胜利窗口
+        if(win()){
+            if(model.isREDWin()){}
+            else if(model.isBLUEWin()){}
         }
 
 

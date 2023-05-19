@@ -115,6 +115,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard());
                 mainFrame.setGameController(gameController);
+                gameController.setFrame(mainFrame);
                 mainFrame.setVisible(true);
 
             } else {

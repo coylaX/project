@@ -24,6 +24,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     private ChessboardComponent chessboardComponent;
     private GameController controller;
     JButton restartButton = new JButton("Restart");
+    JLabel playerLabel = new JLabel("当前回合:蓝方");
 
     public ChessGameFrame(int width, int height) {
         setTitle("斗兽棋"); //设置标题
@@ -45,6 +46,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         addLoadButton();
         addSaveButton();
         addJMenu();
+        addCurrentPlayer();
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -81,18 +83,20 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     //在controller中设置count回合数
     // 显示currentPlayer
     public void addCurrentPlayer(){
-        JLabel playerLabel = new JLabel("当前回合:蓝方");
         playerLabel.setLocation(HEIGTH + 40, HEIGTH / 20);
         playerLabel.setSize(200, 60);
         playerLabel.setFont(new Font("楷体", Font.BOLD, 25));
-        playerLabel.setText(String.format("%s%s","当前回合：","红方"));
         add(playerLabel);
     }
     public void viewCurrentPlayer(){
-        if(controller.getCurrentPlayer()== PlayerColor.BLUE){
-
-        }else if(controller.getCurrentPlayer()==PlayerColor.RED){
-
+        if(controller.win()){
+            playerLabel.setText(String.format("%s","游戏结束！"));
+        }else if(!controller.win()){
+            if(controller.getCurrentPlayer()== PlayerColor.BLUE){
+                playerLabel.setText(String.format("%s%s","当前回合：","蓝方"));
+            }else if(controller.getCurrentPlayer()==PlayerColor.RED){
+                playerLabel.setText(String.format("%s%s","当前回合：","红方"));
+            }
         }
     }
 
