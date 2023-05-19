@@ -172,6 +172,7 @@ public class GameController implements GameListener {
         view.repaint();//
         this.currentPlayer = PlayerColor.BLUE;
         frame.viewCurrentPlayer();
+        frame.setStepAndCount();
     }
 
     public PlayerColor getCurrentPlayer() {

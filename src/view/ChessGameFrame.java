@@ -81,6 +81,11 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         ++step;
         statusLabel.setText(String.format("%s%d", "回合数: ", (step+1)/2));
     }
+    public void setStepAndCount(){
+        count=1;
+        step=1;
+        statusLabel.setText(String.format("%s%d", "回合数: ", (step+1)/2));
+    }
 
     //在controller中设置count回合数
     // 显示currentPlayer

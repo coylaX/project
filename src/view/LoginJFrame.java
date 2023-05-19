@@ -120,7 +120,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 gameController.setFrame(mainFrame);
                 mainFrame.setVisible(true);
                 //以下是登录后放音乐，第一行是路径
-                String filepath="";
+                String filepath="Music/关大洲-清平乐.wav";
                 MusicPlayer musicObject=new MusicPlayer();
                 musicObject.playMusic(filepath);
 
