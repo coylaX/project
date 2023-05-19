@@ -22,6 +22,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
     public LoginJFrame(){
         initJFrame();
         initView();
+        this.setResizable(false);
         this.setVisible(true);
     }
 
@@ -116,6 +117,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard());
                 mainFrame.setGameController(gameController);
                 gameController.setFrame(mainFrame);
+
                 mainFrame.setVisible(true);
 
             } else {

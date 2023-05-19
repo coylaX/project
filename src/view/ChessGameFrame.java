@@ -39,7 +39,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         setLayout(null);
 
         //initialize the menu
-
         addChessboard();
         setStepLabel();
         addRestartButton();
@@ -191,10 +190,55 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     }
 
     //在GameController中的Win（）执行
-    private void addWinLabel() {
+    public void blueWinDialog() {
+        JDialog winDialog = new JDialog();
+        winDialog.setSize(650, 450);
+        //让弹框置顶
+        winDialog.setAlwaysOnTop(true);
+        //让弹框居中
+        winDialog.setLocationRelativeTo(null);
+        //弹框不关闭永远无法操作下面的界面
+        winDialog.setModal(true);
+
+        JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
+        winJLabel.setBounds(0, 0, 650, 450);
+        winDialog.add(winJLabel);
+
+        JLabel winPlayerJLabel=new JLabel("蓝方胜利！");
+        winPlayerJLabel.setBounds(550,30,100,20);
+        winDialog.add(winPlayerJLabel);
+
+        winDialog.setVisible(true);
+        /**JOptionPane.showMessageDialog(this, "Imagine\\Victory.png");
         JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
         winJLabel.setBounds(203, 183, 597, 373);
-        this.getContentPane().add(winJLabel);
+        this.getContentPane().add(winJLabel);**/
+    }
+
+    public void redWinDialog() {
+        JDialog winDialog = new JDialog();
+        winDialog.setSize(650, 550);
+        //让弹框置顶
+        winDialog.setAlwaysOnTop(true);
+        //让弹框居中
+        winDialog.setLocationRelativeTo(null);
+        //弹框不关闭永远无法操作下面的界面
+        winDialog.setModal(true);
+
+        JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
+        winJLabel.setBounds(0, 0, 650, 450);
+        winDialog.add(winJLabel);
+
+        JLabel winPlayerJLabel=new JLabel("红方胜利！");
+        winPlayerJLabel.setBounds(550,30,100,20);
+        winPlayerJLabel.setLocation(550,30);
+        winDialog.add(winPlayerJLabel);
+
+        winDialog.setVisible(true);
+        /**JOptionPane.showMessageDialog(this, "Imagine\\Victory.png");
+         JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
+         winJLabel.setBounds(203, 183, 597, 373);
+         this.getContentPane().add(winJLabel);**/
     }
 
     public void setGameController(GameController gameController) {
