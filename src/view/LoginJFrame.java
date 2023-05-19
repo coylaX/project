@@ -118,10 +118,13 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard());
                 mainFrame.setGameController(gameController);
                 gameController.setFrame(mainFrame);
-
                 mainFrame.setVisible(true);
+                //以下是登录后放音乐，第一行是路径
+                String filepath="";
+                MusicPlayer musicObject=new MusicPlayer();
+                musicObject.playMusic(filepath);
 
-            } else if(contains(userInfo)) {
+            } else{
                 System.out.println("用户名或密码错误");
                 showJDialog("用户名或密码错误");
             }
@@ -154,18 +157,26 @@ public class LoginJFrame extends JFrame implements MouseListener {
     public boolean contains(User userInfo){
         for (int i = 0; i < userList.size(); i++) {
             System.out.println(userList.get(i).getUsername());
-            if(userList.get(i).getUsername().equals(userInfo.getUsername()) && userList.get(i).getPassword().equals( userInfo.getPassword()))
+            System.out.println(userList.get(i).getPassword());
+            System.out.println(i);
+            if(userList.get(i).getUsername().equals(userInfo.getUsername()) && userList.get(i).getPassword().equals( userInfo.getPassword())) {
                 System.out.println("用户名和密码正确！");
                 return true;
+            }
         }
         System.out.println("用户名或密码错误！");
         return false;
     }
     public boolean examName(User userInfo){
         for (int i = 0; i < userList.size(); i++) {
-            if(userList.get(i).getUsername().equals(userInfo.getUsername()))
+            System.out.println(userList.get(i).getUsername());
+            System.out.println(i);
+            if(userList.get(i).getUsername().equals(userInfo.getUsername())) {
+                System.out.println("新建用户名");
                 return true;
+            }
         }
+        System.out.println("错误：重复的用户名");
         return false;
     }
     public void showJDialog(String content) {
