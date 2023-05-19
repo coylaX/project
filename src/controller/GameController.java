@@ -98,6 +98,14 @@ public class GameController implements GameListener {
                 if(model.isBLUEWin()){}
             }
             **/
+        }else{
+            if(win()){
+                if(model.isREDWin())
+                    frame.redWinDialog();
+                else if(model.isBLUEWin())
+                    frame.blueWinDialog();
+                frame.restartHints();
+            }
         }
 
     }
@@ -143,12 +151,15 @@ public class GameController implements GameListener {
                 frame.moveHints();
             }
         }//如果胜利弹出胜利窗口
-        if(win()){
-            if(model.isREDWin()){}
-            else if(model.isBLUEWin()){}
+        else{
+            if(win()){
+                if(model.isREDWin())
+                    frame.redWinDialog();
+                else if(model.isBLUEWin())
+                    frame.blueWinDialog();
+                frame.restartHints();
+            }
         }
-
-
     }
     public void restartGame(){//view里有需要这个方法的地方
         model.removeAllPieces();//model中清除所有棋子

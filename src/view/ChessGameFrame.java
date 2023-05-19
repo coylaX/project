@@ -68,7 +68,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     /**
      * 在游戏面板中添加标签
      */
-    //TODO：如何保持数据一直更新？？？回合数和回合对象
+    //保持数据一直更新？？？回合数和回合对象：调用一次view函数
     public void setStepLabel() {
         JLabel statusLabel = new JLabel("回合数: " + count);
         statusLabel.setLocation(HEIGTH + 40, HEIGTH / 10);
@@ -114,6 +114,9 @@ public class ChessGameFrame extends JFrame implements ActionListener {
 
     public void moveHints() {
         JOptionPane.showMessageDialog(this, "步骤违规，请重试！");
+    }
+    public void restartHints(){
+        JOptionPane.showMessageDialog(this, "请重新开始游戏！");
     }
 
     private void addLoadButton() {
