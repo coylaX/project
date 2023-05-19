@@ -85,14 +85,27 @@ public class GameController implements GameListener {
                 // ？？？TODO: if the chess enter Dens or Traps and so on
                 if(win()){
                     if(model.isREDWin())
-                        frame.blueWinDialog();
-                    else if(model.isBLUEWin())
                         frame.redWinDialog();
+                    else if(model.isBLUEWin())
+                        frame.blueWinDialog();
                 }
             }else if(selectedPoint != null && !model.isValidMove(selectedPoint, point)){
                 frame.moveHints();
             }
-
+            //如果胜利弹出胜利窗口
+           /** if(win()){
+                if(model.isREDWin()){}
+                if(model.isBLUEWin()){}
+            }
+            **/
+        }else{
+            if(win()){
+                if(model.isREDWin())
+                    frame.redWinDialog();
+                else if(model.isBLUEWin())
+                    frame.blueWinDialog();
+                frame.restartHints();
+            }
         }
 
     }
@@ -130,16 +143,23 @@ public class GameController implements GameListener {
                 view.repaint();
                 if(win()){
                     if(model.isREDWin())
-                        frame.blueWinDialog();
-                    else if(model.isBLUEWin())
                         frame.redWinDialog();
+                    else if(model.isBLUEWin())
+                        frame.blueWinDialog();
                 }
             }else if(selectedPoint!=null&&selectedPoint!=point&&!model.isValidCapture(selectedPoint,point)){
                 frame.moveHints();
             }
+        }//如果胜利弹出胜利窗口
+        else{
+            if(win()){
+                if(model.isREDWin())
+                    frame.redWinDialog();
+                else if(model.isBLUEWin())
+                    frame.blueWinDialog();
+                frame.restartHints();
+            }
         }
-
-
     }
     public void restartGame(){//view里有需要这个方法的地方
         model.removeAllPieces();//model中清除所有棋子

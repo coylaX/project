@@ -13,12 +13,13 @@ public class LoginJFrame extends JFrame implements MouseListener {
     static ArrayList<User> userList=new ArrayList<>();
     static{
         userList.add(new User("Administrator","123"));
+        userList.add(new User("123","123"));
     }
-    JButton login = new JButton();
-    JButton register = new JButton();
     JTextField username = new JTextField();
     //JTextField password = new JTextField();
     JPasswordField password = new JPasswordField();
+    JButton login = new JButton();
+    JButton register = new JButton();
     public LoginJFrame(){
         initJFrame();
         initView();
@@ -120,7 +121,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
 
                 mainFrame.setVisible(true);
 
-            } else {
+            } else if(contains(userInfo)) {
                 System.out.println("用户名或密码错误");
                 showJDialog("用户名或密码错误");
             }
@@ -137,7 +138,6 @@ public class LoginJFrame extends JFrame implements MouseListener {
             if (usernameInput.length() == 0 || passwordInput.length() == 0) {
                 //校验用户名和密码是否为空
                 System.out.println("用户名或者密码为空");
-
                 //调用showJDialog方法并展示弹框
                 showJDialog("用户名或者密码为空");
             }else if(examName(userInfo)){
@@ -153,7 +153,8 @@ public class LoginJFrame extends JFrame implements MouseListener {
 
     public boolean contains(User userInfo){
         for (int i = 0; i < userList.size(); i++) {
-            if(userList.get(i).getUsername().equals(userInfo.getUsername())&&userList.get(i).getPassword()== userInfo.getPassword())
+            System.out.println(userList.get(i).getUsername());
+            if(userList.get(i).getUsername().equals(userInfo.getUsername()) && userList.get(i).getPassword()== userInfo.getPassword())
                 System.out.println("用户名和密码正确！");
                 return true;
         }
