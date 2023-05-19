@@ -19,12 +19,13 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     private final int HEIGTH;
 
     private final int ONE_CHESS_SIZE;
-
-    private int count;
+    private int count=1;
+    private int step=1;
     private ChessboardComponent chessboardComponent;
     private GameController controller;
     JButton restartButton = new JButton("Restart");
     JLabel playerLabel = new JLabel("当前回合:蓝方");
+    JLabel statusLabel = new JLabel("回合数: " + count);
 
     public ChessGameFrame(int width, int height) {
         setTitle("斗兽棋"); //设置标题
@@ -70,13 +71,15 @@ public class ChessGameFrame extends JFrame implements ActionListener {
      */
     //保持数据一直更新？？？回合数和回合对象：调用一次view函数
     public void setStepLabel() {
-        JLabel statusLabel = new JLabel("回合数: " + count);
         statusLabel.setLocation(HEIGTH + 40, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("楷体", Font.BOLD, 25));
         //每次增加回合了救引用这个方法
-        statusLabel.setText(String.format("%s%d", "回合数: ", ++count));
         add(statusLabel);
+    }
+    public void viewCount(){
+        ++step;
+        statusLabel.setText(String.format("%s%d", "回合数: ", (step+1)/2));
     }
 
     //在controller中设置count回合数

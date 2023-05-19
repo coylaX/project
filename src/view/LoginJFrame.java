@@ -154,7 +154,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
     public boolean contains(User userInfo){
         for (int i = 0; i < userList.size(); i++) {
             System.out.println(userList.get(i).getUsername());
-            if(userList.get(i).getUsername().equals(userInfo.getUsername()) && userList.get(i).getPassword()== userInfo.getPassword())
+            if(userList.get(i).getUsername().equals(userInfo.getUsername()) && userList.get(i).getPassword().equals( userInfo.getPassword()))
                 System.out.println("用户名和密码正确！");
                 return true;
         }

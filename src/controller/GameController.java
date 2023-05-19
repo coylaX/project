@@ -63,7 +63,6 @@ public class GameController implements GameListener {
         if(model.isBLUEWin()|| model.isREDWin())
             b = true;
         return b;
-
     }
 
 
@@ -83,6 +82,8 @@ public class GameController implements GameListener {
                 //重绘制
                 view.repaint();
                 // ？？？TODO: if the chess enter Dens or Traps and so on
+                //更新回合数
+                frame.viewCount();
                 if(win()){
                     if(model.isREDWin())
                         frame.redWinDialog();
@@ -141,6 +142,8 @@ public class GameController implements GameListener {
                 swapColor();
                 //重绘制
                 view.repaint();
+                //更新回合数
+                frame.viewCount();
                 if(win()){
                     if(model.isREDWin())
                         frame.redWinDialog();
