@@ -147,6 +147,10 @@ public class Chessboard {
         if (getChessPieceAt(src) == null || getChessPieceAt(dest) != null) {
             return false;
         }
+        else if(getChessPieceAt(src)!=null&&getChessPieceOwner(src)==PlayerColor.RED&& dest.isRedHen())
+            return false;
+        else if(getChessPieceAt(src)!=null&&getChessPieceOwner(src)==PlayerColor.BLUE&& dest.isBlueHen())
+            return false;
         else if(!getChessPieceAt(src).isValidMove(dest))
             return false;
         else if(getChessPieceAt(src).rank==7||getChessPieceAt(src).rank==6){//判断是否为能够跳河的动物
@@ -167,7 +171,26 @@ public class Chessboard {
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
         // TODO:Fix this method
         boolean b = false;
-        if(getChessPieceOwner(src)!=getChessPieceOwner(dest)){
+        boolean bb = false;
+
+
+      if(getChessPieceAt(src).rank==7||getChessPieceAt(src).rank==6){//判断是否为能够跳河的动物
+            if(src.isBesideRiver()){//判断是否在河边
+                if(src.getCol()== dest.getCol()){
+                    if(Math.abs(src.getRow()- dest.getRow())==4&&(!isBlocked(src,dest)))
+                        bb= true;
+                }
+                if(src.getRow()== dest.getRow()){
+                    if(Math.abs(src.getCol()- dest.getCol())==3&&(!isBlocked(src,dest)))
+                        bb= true;
+                }
+            }
+        } else if (calculateDistance(src, dest) == 1) {
+            bb=true;
+        }
+
+
+        if(getChessPieceOwner(src)!=getChessPieceOwner(dest)&&bb){
             if(getChessPieceAt(src).rank>=getChessPieceAt(dest).rank
                     &&(!(getChessPieceAt(src).rank==8&&getChessPieceAt(dest).rank==1)))
                 b = true;

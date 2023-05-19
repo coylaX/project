@@ -21,4 +21,4 @@ public class Cell implements Serializable {
     public void removePiece() {
         this.piece = null;
     }
-}
+}//1. 胜利之后停止 2.显示可走棋子（） 3.保存

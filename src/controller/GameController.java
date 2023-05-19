@@ -92,12 +92,7 @@ public class GameController implements GameListener {
             }else if(selectedPoint != null && !model.isValidMove(selectedPoint, point)){
                 frame.moveHints();
             }
-            //如果胜利弹出胜利窗口
-           /** if(win()){
-                if(model.isREDWin()){}
-                if(model.isBLUEWin()){}
-            }
-            **/
+
         }
 
     }
@@ -142,10 +137,6 @@ public class GameController implements GameListener {
             }else if(selectedPoint!=null&&selectedPoint!=point&&!model.isValidCapture(selectedPoint,point)){
                 frame.moveHints();
             }
-        }//如果胜利弹出胜利窗口
-        if(win()){
-            if(model.isREDWin()){}
-            else if(model.isBLUEWin()){}
         }
 
 

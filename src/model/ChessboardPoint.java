@@ -73,4 +73,16 @@ public class ChessboardPoint {
             b = true;
         return b;
     }
+    public boolean isRedHen(){
+        boolean b = false;
+        if(this.getRow()==0&&this.getCol()==3)
+            b=true;
+        return b;
+    }
+    public boolean isBlueHen(){
+        boolean b = false;
+        if(this.getRow()==8&&this.getCol()==3)
+            b = true;
+        return b;
+    }
 }
