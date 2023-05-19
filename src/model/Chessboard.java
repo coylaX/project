@@ -175,7 +175,7 @@ public class Chessboard {
         // TODO:Fix this method
         boolean b = false;
         boolean bb = false;//判断是否可移动
-      if(getChessPieceAt(src).rank==7||getChessPieceAt(src).rank==6){//判断是否为能够跳河的动物
+     if(getChessPieceAt(src).rank==7||getChessPieceAt(src).rank==6){//判断是否为能够跳河的动物
             if(src.isBesideRiver()){//判断是否在河边
                 if(src.getCol()== dest.getCol()){
                     if(Math.abs(src.getRow()- dest.getRow())==4&&(!isBlocked(src,dest)))
@@ -186,7 +186,8 @@ public class Chessboard {
                         bb= true;
                 }
             }
-        } else if (calculateDistance(src, dest) == 1) {
+        }
+     if (calculateDistance(src, dest) == 1) {
             bb=true;
         }
 
