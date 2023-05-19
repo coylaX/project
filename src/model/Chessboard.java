@@ -205,7 +205,7 @@ public class Chessboard {
             }
         }
         boolean bb = false;
-        if(grid[8][3].getPiece()!=null&&grid[0][3].getPiece().getOwner()==PlayerColor.RED)
+        if(grid[8][3].getPiece()!=null&&grid[8][3].getPiece().getOwner()==PlayerColor.RED)
             bb = true;
         return b||bb;
     }
