@@ -87,7 +87,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         statusLabel.setText(String.format("%s%d", "回合数: ", (step+1)/2));
     }
 
-    //在controller中设置count回合数
     // 显示currentPlayer
     public void addCurrentPlayer() {
         playerLabel.setLocation(HEIGTH + 40, HEIGTH / 20);
@@ -271,7 +270,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     public void setGameController(GameController gameController) {
         this.controller = gameController;
     }
-
 
     //监听是哪个按钮
     @Override
