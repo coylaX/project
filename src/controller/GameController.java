@@ -323,12 +323,13 @@ public class GameController implements GameListener {
     public void saveGameIntoFile(String path){
         try {
             ArrayList<String> saveGame = new ArrayList<String>();
+            saveGame = model.saveChessboardIntoFiles();
             String s = this.StepCount+"";
-            model.saveChessboardIntoFiles().add(s);
-            for (int i = 0; i < model.saveChessboardIntoFiles().size(); i++) {
-                System.out.println(model.saveChessboardIntoFiles().get(i));
+            saveGame.add(s);
+            for (int i = 0; i < saveGame.size(); i++) {
+                System.out.println(saveGame.get(i));
             }
-            Files.write(Path.of(path),model.saveChessboardIntoFiles(), Charset.defaultCharset());
+            Files.write(Path.of(path),saveGame, Charset.defaultCharset());
         }catch (IOException e){
             throw new RuntimeException(e);
         }
