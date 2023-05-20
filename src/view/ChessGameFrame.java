@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import controller.GameController.*;
 import model.PlayerColor;
 
+import static view.MusicPlayer.clip;
+
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  */
@@ -23,6 +25,12 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     private int step=1;
     private ChessboardComponent chessboardComponent;
     private GameController controller;
+    private MusicPlayer music;
+
+    public void setMusic(MusicPlayer music) {
+        this.music = music;
+    }
+
     JButton restartButton = new JButton("Restart");
     JLabel playerLabel = new JLabel("当前回合:蓝方");
     JLabel statusLabel = new JLabel("回合数: " + count);
@@ -106,7 +114,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
             }
         }
     }
-
     /**
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
      */
@@ -157,7 +164,8 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         JMenuItem replayItem = new JMenuItem("重新游戏");
         JMenuItem reLoginItem = new JMenuItem("重新登陆");
         JMenuItem closeItem = new JMenuItem("关闭游戏");
-        JMenuItem musicItem = new JMenuItem("音乐播放");
+        JMenuItem musicItem = new JMenuItem("暂停音乐");
+        JMenuItem volumeItem = new JMenuItem("调整音量");
 
         JMenuItem ruleItem = new JMenuItem("规则");
         JMenuItem flagItem = new JMenuItem("标志说明");
@@ -167,6 +175,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         functionJMenu.add(reLoginItem);
         functionJMenu.add(closeItem);
         functionJMenu.add(musicItem);
+        functionJMenu.add(volumeItem);
 
         aboutJMenu.add(ruleItem);
         aboutJMenu.add(flagItem);
@@ -194,6 +203,23 @@ public class ChessGameFrame extends JFrame implements ActionListener {
             System.out.println("关闭游戏");
             //直接关闭虚拟机
             System.exit(0);
+        });
+        //TODO:如何播放暂停
+        musicItem.addActionListener((e)->{
+            System.out.println("播放或者暂停音乐");
+            if(clip.isRunning()){
+                clip.stop();
+                musicItem.setText("播放音乐");
+            }
+            else {
+                clip.start();
+                musicItem.setText("暂停音乐");
+            }
+        });
+        //调整音量
+        volumeItem.addActionListener((e)->{
+            System.out.println("调整音量");
+            this.setVolumeSlider();
         });
 
         ruleItem.addActionListener((e) -> {
@@ -269,6 +295,16 @@ public class ChessGameFrame extends JFrame implements ActionListener {
 
     public void setGameController(GameController gameController) {
         this.controller = gameController;
+    }
+
+    //调整音量（？
+    private void setVolumeSlider(){
+        JSlider volumeSlider=new JSlider(0,100);
+        volumeSlider.setMajorTickSpacing(10);
+        volumeSlider.setMinorTickSpacing(5);
+        volumeSlider.setPaintLabels(true);
+        volumeSlider.setPaintTicks(true);
+        add(volumeSlider);
     }
 
     //监听是哪个按钮
