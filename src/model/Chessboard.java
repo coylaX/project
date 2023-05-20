@@ -91,7 +91,59 @@ public class Chessboard {
             }
         }
     }
-
+        //将棋盘存入文件中
+    public ArrayList<String> saveChessboardIntoFiles(){
+       ArrayList<String> saveChessboard = new ArrayList<>() ;
+        char[][] save = new char[9][7];
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                if(this.grid[i][j].getPiece()==null)
+                    save[i][j] = '空';
+                else if(this.grid[i][j].getPiece()!=null){
+                    if(this.grid[i][j].getPiece().getOwner()==PlayerColor.RED) {
+                        if(this.grid[i][j].getPiece().getDisPlayName()=="象")
+                            save[i][j]='象';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="狮")
+                            save[i][j]='狮';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="虎")
+                            save[i][j]='虎';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="豹")
+                            save[i][j]='豹';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="狼")
+                            save[i][j]='狼';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="狗")
+                            save[i][j]='狗';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="猫")
+                            save[i][j]='猫';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="鼠")
+                            save[i][j]='鼠';
+                    }
+                    else if(this.grid[i][j].getPiece().getOwner()==PlayerColor.BLUE){
+                        if(this.grid[i][j].getPiece().getDisPlayName()=="象")
+                            save[i][j]='相';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="狮")
+                            save[i][j]='獅';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="虎")
+                            save[i][j]='琥';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="豹")
+                            save[i][j]='犳';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="狼")
+                            save[i][j]='琅';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="狗")
+                            save[i][j]='豿';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="猫")
+                            save[i][j]='貓';
+                        else if(this.grid[i][j].getPiece().getDisPlayName()=="鼠")
+                            save[i][j]='黍';
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            saveChessboard.add(""+save[i][0]+save[i][1]+save[i][2]+save[i][3]+save[i][4]+save[i][5]+save[i][6]);
+        }
+        return saveChessboard;
+    }
      public ChessPiece getChessPieceAt(ChessboardPoint point) {
         return getGridAt(point).getPiece();
     }
@@ -107,8 +159,8 @@ public class Chessboard {
                 }
             }
         }
-        ChessboardPoint wantedpoint = new ChessboardPoint(a,b);
-        return wantedpoint;
+        ChessboardPoint wantedPoint = new ChessboardPoint(a,b);
+        return wantedPoint;
     }
     private Cell getGridAt(ChessboardPoint point) {
         return grid[point.getRow()][point.getCol()];
@@ -242,8 +294,6 @@ public class Chessboard {
             if(getChessPieceOwner(dest)==PlayerColor.BLUE&&dest.isRedTrap())
                 b = true;
         }
-
-
         return b;
     }
 

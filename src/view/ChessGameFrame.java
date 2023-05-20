@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import controller.GameController.*;
 import model.PlayerColor;
 
 import static view.MusicPlayer.clip;
@@ -153,6 +152,12 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click save");
+            String path = JOptionPane.showInputDialog(this,"Input Path here");
+            controller.saveGameIntoFile(path);
+        });
     }
 
     private void addJMenu() {
