@@ -123,6 +123,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 String filepath="Music/关大洲-清平乐.wav";
                 MusicPlayer musicObject=new MusicPlayer();
                 musicObject.playMusic(filepath);
+                mainFrame.setMusic(musicObject);
 
             } else{
                 System.out.println("用户名或密码错误");
