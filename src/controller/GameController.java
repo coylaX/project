@@ -279,6 +279,7 @@ public class GameController implements GameListener {
         Step last = this.PieceStep.get(this.PieceStep.size()-1);
         //删除PieceStep List中的最后一个
         this.PieceStep.remove(this.PieceStep.size()-1);
+        this.StepCount--;
         if(last.getEndChessPiece()==null){
             //model层面移回棋子
             model.moveChessPiece(last.getEnd(), last.getStart());
@@ -298,6 +299,6 @@ public class GameController implements GameListener {
             view.setChessComponentAtGrid(last.getEnd(), beCapturedChess);
 
         }
-
+        this.currentPlayer=last.getCurrentPlayer();
     }
 }
