@@ -9,6 +9,7 @@ import view.ChessGameFrame;
 import view.ChessboardComponent;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -223,11 +224,17 @@ public class GameController implements GameListener {
                 for (String s:lines) {
                     System.out.println(s);
                 }
+
                 model.removeAllPieces();
                 model.initPiecesFromFiles(lines);
                 view.removeAllPieces();
                 view.initiateChessComponent(model);
                 view.repaint();
+                int a = Integer.parseInt(lines.get(lines.size()-1));
+                if(a%2==0)
+                    this.currentPlayer=PlayerColor.RED;
+                else
+                    this.currentPlayer=PlayerColor.BLUE;
             }
         }catch (IOException e){
             throw new RuntimeException(e);
@@ -301,4 +308,31 @@ public class GameController implements GameListener {
         }
         this.currentPlayer=last.getCurrentPlayer();
     }
+
+
+
+    /* save方法
+     * 1.
+     * 2. 读取棋盘，将棋盘的棋子转化成相应的汉字，放在一个String类型的ArrayList数组里
+     * 3. 将步数加入到ArrayList中
+     * 4. 把ArrayList存储到创建好的文件中
+     * 5.
+     * 6.
+     * 7.
+     * */
+    public void saveGameIntoFile(String path){
+        try {
+            ArrayList<String> saveGame = new ArrayList<String>();
+            String s = this.StepCount+"";
+            model.saveChessboardIntoFiles().add(s);
+            for (int i = 0; i < model.saveChessboardIntoFiles().size(); i++) {
+                System.out.println(model.saveChessboardIntoFiles().get(i));
+            }
+            Files.write(Path.of(path),model.saveChessboardIntoFiles(), Charset.defaultCharset());
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
