@@ -11,6 +11,11 @@ import view.ChessComponent;
 import view.ChessGameFrame;
 import view.ChessboardComponent;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
 /**
  * Controller is the connection between model and view,
  * when a Controller receive a request from a view, the Controller
@@ -28,6 +33,7 @@ public class GameController implements GameListener {
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
     private ChessGameFrame frame;
+    private int count=1;
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
@@ -178,4 +184,89 @@ public class GameController implements GameListener {
     public PlayerColor getCurrentPlayer() {
         return currentPlayer;
     }
+
+
+    /*load方法
+    * 1. 读取文件
+    * 2. 将文件里的内容转化成棋盘
+    * 3. model 清除所有棋子
+    * 4. model 根据文件内容初始化棋子
+    * 5. view中清除所有绘制棋子
+    * 6. view中根据现阶段model的内容重新add棋子
+    * 7. view.repaint()
+    * */
+    public void loadGameFromFile(String path){
+        try{
+            List<String> lines = Files.readAllLines(Path.of(path));
+            //错误判断
+            char[] formTest = path.toCharArray();
+            if(formTest[formTest.length-4]!='.'||formTest[formTest.length-3]!='t'||
+                    formTest[formTest.length-2]!='x'||formTest[formTest.length-1]!='t'){
+                //101报错
+            }
+            else if(!isRightChessboard(lines)){
+                //102报错
+            }
+            else if(!isRightChessPiece(lines)){
+                //103报错
+            }
+            else if (!hasCount(lines)) {
+                //104报错
+            }
+            else {
+                for (String s:lines) {
+                    System.out.println(s);
+                }
+                model.removeAllPieces();
+                model.initPiecesFromFiles(lines);
+                view.removeAllPieces();
+                view.initiateChessComponent(model);
+                view.repaint();
+            }
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+    public boolean isRightChessboard(List<String> Lines){
+        boolean b = true;
+        List<String> lines = Lines;
+        lines.remove(9);
+        if(lines.size()!=9)
+            b = false;
+        else {
+            for (int i = 0; i < 9; i++) {
+                char[] test = lines.get(i).toCharArray();
+                if(test.length!=7)
+                    b = false;
+            }
+        }
+        return b;
+    }
+    public boolean isRightChessPiece(List<String> lines){
+        boolean b = true;
+        for (int i = 0; i < 9; i++) {
+            char[] test = lines.get(i).toCharArray();
+            for (int j = 0; j < 7; j++) {
+                if(test[j]!='空'&&test[j]!='相'&&test[j]!='象'&&test[j]!='獅'&&test[j]!='狮'&&test[j]!='琥'
+                        &&test[j]!='虎'&&test[j]!='犳'&&test[j]!='豹'&&test[j]!='琅'&&test[j]!='狼'&&test[j]!='豿'
+                        &&test[j]!='狗'&&test[j]!='貓'&&test[j]!='猫'&&test[j]!='黍'&&test[j]!='鼠')
+                    b = false;
+            }
+        }
+        return b;
+    }
+    public boolean hasCount(List<String> Lines){
+        boolean b = true;
+        if(Lines.size()==9)
+            b = false;
+        else if (Lines.size()==10&&Lines.get(9)!=null) {
+            int count = Integer.parseInt(Lines.get(9));
+            if(count<1)
+                b = false;
+
+        }
+        return b;
+    }
+
+
 }

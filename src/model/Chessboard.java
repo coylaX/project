@@ -52,6 +52,45 @@ public class Chessboard {
         grid[6][6].setPiece(new RatChessPiece(PlayerColor.BLUE, "Rat"));
         grid[2][0].setPiece(new RatChessPiece(PlayerColor.RED, "Rat"));
     }
+        //从文件中初始化棋子
+    public void initPiecesFromFiles(List<String> lines) {
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+      if(lines.get(i).charAt(j)=='相')
+          grid[i][j].setPiece(new ElephantChessPiece(PlayerColor.BLUE,"Elephant"));
+      else if(lines.get(i).charAt(j)=='象')
+          grid[i][j].setPiece(new ElephantChessPiece(PlayerColor.RED,"Elephant"));
+      else if(lines.get(i).charAt(j)=='獅')
+          grid[i][j].setPiece(new LionChessPiece(PlayerColor.BLUE, "Lion"));
+      else if(lines.get(i).charAt(j)=='狮')
+          grid[i][j].setPiece(new LionChessPiece(PlayerColor.RED, "Lion"));
+      else if(lines.get(i).charAt(j)=='琥')
+          grid[i][j].setPiece(new TigerChessPiece(PlayerColor.BLUE, "Tiger"));
+      else if(lines.get(i).charAt(j)=='虎')
+          grid[i][j].setPiece(new TigerChessPiece(PlayerColor.RED, "Tiger"));
+      else if(lines.get(i).charAt(j)=='犳')
+          grid[i][j].setPiece(new LeopardChessPiece(PlayerColor.BLUE, "Leopard"));
+      else if(lines.get(i).charAt(j)=='豹')
+          grid[i][j].setPiece(new LeopardChessPiece(PlayerColor.RED, "Leopard"));
+      else if(lines.get(i).charAt(j)=='琅')
+          grid[i][j].setPiece(new WolfChessPiece(PlayerColor.BLUE, "Wolf"));
+      else if(lines.get(i).charAt(j)=='狼')
+          grid[i][j].setPiece(new WolfChessPiece(PlayerColor.RED, "Wolf"));
+      else if(lines.get(i).charAt(j)=='豿')
+          grid[i][j].setPiece(new DogChessPiece(PlayerColor.BLUE, "Dog"));
+      else if(lines.get(i).charAt(j)=='狗')
+          grid[i][j].setPiece(new DogChessPiece(PlayerColor.RED, "Dog"));
+      else if(lines.get(i).charAt(j)=='貓')
+          grid[i][j].setPiece(new CatChessPiece(PlayerColor.BLUE, "Cat"));
+      else if(lines.get(i).charAt(j)=='猫')
+          grid[i][j].setPiece(new CatChessPiece(PlayerColor.RED, "Cat"));
+      else if(lines.get(i).charAt(j)=='黍')
+          grid[i][j].setPiece(new RatChessPiece(PlayerColor.BLUE, "Rat"));
+      else if(lines.get(i).charAt(j)=='鼠')
+          grid[i][j].setPiece(new RatChessPiece(PlayerColor.RED, "Rat"));
+            }
+        }
+    }
 
     private ChessPiece getChessPieceAt(ChessboardPoint point) {
         return getGridAt(point).getPiece();
@@ -247,8 +286,6 @@ public class Chessboard {
             }
         }
         return p;
-
-
     }
 
 

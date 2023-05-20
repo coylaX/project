@@ -133,12 +133,12 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
-//
-//        button.addActionListener(e -> {
-//            System.out.println("Click load");
-//            String path = JOptionPane.showInputDialog(this,"Input Path here");
-//            gameController.loadGameFromFile(path);
-//        });
+
+       button.addActionListener(e -> {
+           System.out.println("Click load");
+           String path = JOptionPane.showInputDialog(this,"Input Path here");
+            controller.loadGameFromFile(path);
+      });
     }
 
     private void addSaveButton() {
