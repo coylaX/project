@@ -2,10 +2,7 @@ package controller;
 
 
 import listener.GameListener;
-import model.Constant;
-import model.PlayerColor;
-import model.Chessboard;
-import model.ChessboardPoint;
+import model.*;
 import view.CellComponent;
 import view.ChessComponent;
 import view.ChessGameFrame;
@@ -14,6 +11,7 @@ import view.ChessboardComponent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +31,8 @@ public class GameController implements GameListener {
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
     private ChessGameFrame frame;
-    private int count=1;
+    private int StepCount =1;
+    private List<Step> PieceStep=new ArrayList<Step>();
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
@@ -77,6 +76,12 @@ public class GameController implements GameListener {
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
         if(!win()){
             if (selectedPoint != null && model.isValidMove(selectedPoint, point)) {
+                //controller里更新步数
+                this.StepCount++;
+                //步骤List里添加当前步骤
+                Step step =new Step(selectedPoint,point,model.getChessPieceAt(selectedPoint),
+                        null,getCurrentPlayer(),this.StepCount);
+                this.PieceStep.add(step);
                 //实体中移动棋子
                 model.moveChessPiece(selectedPoint, point);
                 //画面上移动棋子
@@ -100,11 +105,6 @@ public class GameController implements GameListener {
                 frame.moveHints();
             }
             //如果胜利弹出胜利窗口
-           /** if(win()){
-                if(model.isREDWin()){}
-                if(model.isBLUEWin()){}
-            }
-            **/
         }else{
             if(win()){
                 if(model.isREDWin())
@@ -134,6 +134,12 @@ public class GameController implements GameListener {
             }
             // TODO: Implement capture function
             else if(selectedPoint!=null&&selectedPoint!=point&&model.isValidCapture(selectedPoint,point)){
+                //controller 里更新步数
+                this.StepCount++;
+                //步骤List里添加当前步骤
+                Step step =new Step(selectedPoint,point,model.getChessPieceAt(selectedPoint),
+                        model.getChessPieceAt(point), getCurrentPlayer(),this.StepCount);
+                this.PieceStep.add(step);
                 //model中移除棋子
                 model.getGrid()[point.getRow()][point.getCol()].removePiece();
                 //显示中移除棋子
@@ -268,5 +274,30 @@ public class GameController implements GameListener {
         return b;
     }
 
+    //悔棋操作
+    public void withdraw(){
+        Step last = this.PieceStep.get(this.PieceStep.size()-1);
+        //删除PieceStep List中的最后一个
+        this.PieceStep.remove(this.PieceStep.size()-1);
+        if(last.getEndChessPiece()==null){
+            //model层面移回棋子
+            model.moveChessPiece(last.getEnd(), last.getStart());
+            //????????view层面移回棋子
+            view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
+        }
+        else if(last.getEndChessPiece()!=null){
+            //model层面移回棋子
+            model.moveChessPiece(last.getEnd(), last.getStart());
+            //????????view层面移回棋子
+            view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
+            //model层面将被吃棋子复原回去
+            model.getGrid()[last.getEnd().getRow()][last.getEnd().getCol()].setPiece(last.getEndChessPiece());
+            //?????????view层面将被吃棋子复原回去
+            ChessComponent beCapturedChess =  new ChessComponent(last.getEndChessPiece().getOwner(),
+                    view.getCHESS_SIZE(),last.getEndChessPiece().getDisPlayName());
+            view.setChessComponentAtGrid(last.getEnd(), beCapturedChess);
 
+        }
+
+    }
 }

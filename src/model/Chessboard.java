@@ -92,12 +92,12 @@ public class Chessboard {
         }
     }
 
-    private ChessPiece getChessPieceAt(ChessboardPoint point) {
+     public ChessPiece getChessPieceAt(ChessboardPoint point) {
         return getGridAt(point).getPiece();
     }
                             //根据坐标得到棋子
 
-  public ChessboardPoint getChessPiecePointofjump(ChessPiece chessPiece){//得到棋子(狮或虎)当前坐标
+  public ChessboardPoint getChessPiecePointofJump(ChessPiece chessPiece){//得到棋子(狮或虎)当前坐标
         int a = 0;
         int b = 0;
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
