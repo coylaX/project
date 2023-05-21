@@ -1,5 +1,6 @@
 package view;
 
+import computerplayer.GameMode;
 import controller.GameController;
 
 import javax.swing.*;
@@ -255,6 +256,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         JMenuItem closeItem = new JMenuItem("关闭游戏");
         JMenuItem musicItem = new JMenuItem("暂停音乐");
         JMenuItem volumeItem = new JMenuItem("调整音量");
+        JMenuItem modeItem = new JMenuItem("切换模式");
 
         JMenuItem ruleItem = new JMenuItem("规则");
         JMenuItem flagItem = new JMenuItem("标志说明");
@@ -265,6 +267,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         functionJMenu.add(closeItem);
         functionJMenu.add(musicItem);
         functionJMenu.add(volumeItem);
+        functionJMenu.add(modeItem);
 
         aboutJMenu.add(ruleItem);
         aboutJMenu.add(flagItem);
@@ -310,6 +313,28 @@ public class ChessGameFrame extends JFrame implements ActionListener {
             //this.setVolumeSlider();
             VolumeFrame volume = new VolumeFrame();
             volume.setVisible(true);
+        });
+        modeItem.addActionListener((e)->{
+            System.out.println("切换游戏模式");
+            int mod = JOptionPane.showOptionDialog(null,"选择游戏模式",
+                    "请选择游戏模式",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,
+                    null,new String[]{"双人","随机","贪心","剪枝"},"双人");
+
+            GameMode gameMode=null;
+            if(mod==0){
+                System.out.println("双人");
+                gameMode=GameMode.Normal;
+            }else if(mod==1){
+                System.out.println("随机");
+                gameMode=GameMode.Random;
+            }else if(mod==2){
+                System.out.println("贪心");
+                gameMode=GameMode.Greedy;
+            }else if(mod==3){
+                System.out.println("剪枝");
+                //gameMode=GameMode.;
+            }
+            controller.setGameMode(gameMode);
         });
 
         ruleItem.addActionListener((e) -> {
