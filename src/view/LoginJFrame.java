@@ -7,24 +7,34 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.Scanner;
 
 public class LoginJFrame extends JFrame implements MouseListener {
     static ArrayList<User> userList=new ArrayList<>();
-    static{
+    /**static{
         userList.add(new User("Administrator","123"));
         userList.add(new User("123","123"));
-    }
+    }**/
     JTextField username = new JTextField();
     //JTextField password = new JTextField();
     JPasswordField password = new JPasswordField();
     JButton login = new JButton();
     JButton register = new JButton();
-    public LoginJFrame(){
+    public LoginJFrame() {
         initJFrame();
         initView();
         this.setResizable(false);
         this.setVisible(true);
+
+        this.setArrayList();
     }
 
     public void initView(){
@@ -150,8 +160,59 @@ public class LoginJFrame extends JFrame implements MouseListener {
             }else{
                 System.out.println("注册成功");
                 showJDialog("注册成功！请重新登陆");
-                userList.add(userInfo);
+                //把注册的账号写入账号库中
+                try {
+                    registerAccount(usernameInput,passwordInput);
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+                /**try {
+                    ArrayList<String> newAccount = new ArrayList<String>();
+                    newAccount.add(usernameInput);
+                    newAccount.add(passwordInput);
+                    for (int i = 0; i < newAccount.size(); i++) {
+                        System.out.println(newAccount.get(i));
+                    }
+                    Files.write(Path.of("/Account/account.txt"), newAccount, Charset.defaultCharset());
+                } catch (IOException e0) {
+                    throw new RuntimeException(e0);
+                }**/
+
+                //userList.add(userInfo);
             }
+        }
+    }
+    public void registerAccount(String username,String password) throws FileNotFoundException {
+        Scanner input=new Scanner(new File("Account/account.txt"));
+        ArrayList<String> oldAccount=new ArrayList<>();
+        StringBuilder oldString=new StringBuilder();
+        while(input.hasNext()){
+            oldAccount.add(input.next());
+        }
+        System.out.println("旧账户继承:");
+        for (int i = 0; i <oldAccount.size(); i++) {
+            System.out.printf(" %s ",oldAccount.get(i));
+            oldString.append(oldAccount.get(i)+" ");
+        }
+        System.out.printf("新账户添加：%s %s ",username,password);
+        input.close();
+        Formatter output=new Formatter("Account/account.txt");
+        output.format("%s%s %s ",oldString.toString(),username,password);
+        output.close();
+        this.setArrayList();
+    }
+    public void setArrayList(){
+        try {
+            Scanner input = new Scanner(new File("Account/account.txt"));
+            while (input.hasNext()) {
+                String userName = input.next();
+                String passWord = input.next();
+                User oldUser = new User(userName, passWord);
+                userList.add(oldUser);
+            }
+            input.close();
+        }catch (FileNotFoundException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -168,11 +229,11 @@ public class LoginJFrame extends JFrame implements MouseListener {
     public boolean examName(User userInfo){
         for (int i = 0; i < userList.size(); i++) {
             if(userList.get(i).getUsername().equals(userInfo.getUsername())) {
-                System.out.println("新建用户名");
+                System.out.println("错误：重复的用户名");
                 return true;
             }
         }
-        System.out.println("错误：重复的用户名");
+        System.out.println("新建用户名");
         return false;
     }
     public void showJDialog(String content) {
