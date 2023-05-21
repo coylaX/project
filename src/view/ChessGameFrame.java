@@ -39,12 +39,13 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         this.WIDTH = width;
         this.HEIGTH = height;
         this.ONE_CHESS_SIZE = (HEIGTH * 4 / 5) / 9;
-        this.setAlwaysOnTop(true);
+        //this.setAlwaysOnTop(true);
 
         setSize(WIDTH, HEIGTH);
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
         setLayout(null);
+        this.setResizable(false);
 
         //initialize the menu
         addChessboard();
@@ -54,6 +55,17 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         addSaveButton();
         addJMenu();
         addCurrentPlayer();
+
+        /**JLabel background = new JLabel(new ImageIcon("Imagine\\Background.jpg"));
+        //background.setBounds(-15, -24, 1124, 751);
+        background.setBounds(-15, -24, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+        this.getContentPane().add(background);
+        Image GameBG = Toolkit.getDefaultToolkit().getImage("Imagine\\Background.jpg").getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+        JComponent imageComponent = new ImageComponent(GameBG);// create an instance of ImageComponent
+        imageComponent.setSize(WIDTH,HEIGHT);
+        imageComponent.setLocation(0, 0); // set absolute location
+        this.add(imageComponent,JLayeredPane.FRAME_CONTENT_LAYER);
+         **/
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -194,8 +206,8 @@ public class ChessGameFrame extends JFrame implements ActionListener {
 
         replayItem.addActionListener((e) -> {
             System.out.println("重置游戏");
-            JOptionPane.showMessageDialog(this, "游戏已重置！");
             controller.restartGame();
+            JOptionPane.showMessageDialog(this, "游戏已重置！");
         });
         reLoginItem.addActionListener((e) -> {
             System.out.println("重新登陆");
@@ -224,7 +236,9 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         //调整音量
         volumeItem.addActionListener((e)->{
             System.out.println("调整音量");
-            this.setVolumeSlider();
+            //this.setVolumeSlider();
+            VolumeFrame volume=new VolumeFrame();
+            volume.setVisible(true);
         });
 
         ruleItem.addActionListener((e) -> {
@@ -302,15 +316,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         this.controller = gameController;
     }
 
-    //调整音量（？
-    private void setVolumeSlider(){
-        JSlider volumeSlider=new JSlider(0,100);
-        volumeSlider.setMajorTickSpacing(10);
-        volumeSlider.setMinorTickSpacing(5);
-        volumeSlider.setPaintLabels(true);
-        volumeSlider.setPaintTicks(true);
-        add(volumeSlider);
-    }
 
     //监听是哪个按钮
     @Override
