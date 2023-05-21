@@ -331,11 +331,64 @@ public class Chessboard {
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
                 ChessboardPoint point =new ChessboardPoint(i,j);
-                if(isValidMove(src,point)||isValidCapture(src,point))
+                if(getGrid()[i][j].getPiece()==null&&isValidMove(src,point)){
                     p.add(point);
+                }
+                else if(getGrid()[i][j].getPiece()!= null&&isValidCapture(src,point)){
+                    p.add(point);
+                }
             }
         }
         return p;
+    }
+
+
+    public List<ChessboardPoint> getValidPoints(PlayerColor color){
+        List<ChessboardPoint> availablePoints = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 7; j++) {
+                ChessboardPoint point = new ChessboardPoint(i, j);
+                if (getChessPieceAt(point) != null && getChessPieceAt(point).getOwner() == color) {
+                    availablePoints.add(point);
+                }
+            }
+        }
+        return availablePoints;
+    }
+
+
+    public List<Step> getValidSteps(PlayerColor color){
+        List<Step> availableSteps = new ArrayList<>();
+        List<ChessboardPoint> availablePoints = getValidPoints(color);
+        for (ChessboardPoint point : availablePoints) {
+            List<ChessboardPoint> validMoves = getValidMoves(point);
+            for (ChessboardPoint destPoint : validMoves) {
+                availableSteps.add(recordStep(point, destPoint, color, 0));
+            }
+        }
+        return availableSteps;
+    }
+    public Step recordStep(ChessboardPoint fromPoint, ChessboardPoint toPoint, PlayerColor currentPlayer, int turn){
+        ChessPiece fromPiece = getChessPieceAt(fromPoint);
+        ChessPiece toPiece = getChessPieceAt(toPoint);
+        Step step = new Step(fromPoint, toPoint, fromPiece, toPiece, currentPlayer, turn);
+//        System.out.println(step);
+        return step;
+    }
+
+
+    public List<ChessboardPoint> getValidMoves(ChessboardPoint point) {
+        List<ChessboardPoint> availablePoints = new ArrayList<>();
+        // 检查整张棋盘，用isValidMove()方法检查每个格子是否可以移动到，同时也用isValidCapture()方法检查每个格子是否可以吃掉
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 7; j++) {
+                ChessboardPoint destPoint = new ChessboardPoint(i, j);
+                if (isValidMove(point, destPoint) || isValidCapture(point, destPoint)) {
+                    availablePoints.add(destPoint);
+                }
+            }
+        }
+        return availablePoints;
     }
 
 
