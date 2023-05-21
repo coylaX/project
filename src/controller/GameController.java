@@ -330,6 +330,7 @@ public class GameController implements GameListener {
         try{
             if(!isRightForm(path)){
                 System.out.println("101");
+                frame.wrong101Hint();
                 return;
                 //101报错
             }
@@ -341,14 +342,17 @@ public class GameController implements GameListener {
                 System.out.println("102");
                 //102报错
                 System.out.println("error");
+                frame.wrong102Hint();
             }
             else if(!isRightChessPiece(lines)){
                 System.out.println("103");
                 //103报错
+                frame.wrong103Hint();
 
             }
             else if (!hasCount(lines)) {
                 System.out.println("104");
+                frame.wrong104Hint();
                 //104报错
             }
             else {

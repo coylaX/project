@@ -139,9 +139,6 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 }else if(mod==2){
                     System.out.println("贪心");
                     gameMode=GameMode.Greedy;
-                }else if(mod==3){
-                    System.out.println("剪枝");
-                    //gameMode=GameMode.;
                 }
 
                 //打开游戏的主界面
