@@ -134,6 +134,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 MusicPlayer musicObject=new MusicPlayer();
                 musicObject.playMusic(filepath);
                 mainFrame.setMusic(musicObject);
+                mainFrame.setNowUser(userInfo);
 
             } else{
                 System.out.println("用户名或密码错误");

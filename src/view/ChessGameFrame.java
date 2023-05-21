@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Date;
 
 import model.PlayerColor;
 
@@ -20,11 +23,16 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     private final int HEIGTH;
 
     private final int ONE_CHESS_SIZE;
-    private int count=1;
-    private int step=1;
+    private int count = 1;
+    private int step = 1;
     private ChessboardComponent chessboardComponent;
     private GameController controller;
     private MusicPlayer music;
+    private User nowUser;
+
+    public void setNowUser(User nowUser) {
+        this.nowUser = nowUser;
+    }
 
     public void setMusic(MusicPlayer music) {
         this.music = music;
@@ -57,14 +65,14 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         addCurrentPlayer();
 
         /**JLabel background = new JLabel(new ImageIcon("Imagine\\Background.jpg"));
-        //background.setBounds(-15, -24, 1124, 751);
-        background.setBounds(-15, -24, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
-        this.getContentPane().add(background);
-        Image GameBG = Toolkit.getDefaultToolkit().getImage("Imagine\\Background.jpg").getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-        JComponent imageComponent = new ImageComponent(GameBG);// create an instance of ImageComponent
-        imageComponent.setSize(WIDTH,HEIGHT);
-        imageComponent.setLocation(0, 0); // set absolute location
-        this.add(imageComponent,JLayeredPane.FRAME_CONTENT_LAYER);
+         //background.setBounds(-15, -24, 1124, 751);
+         background.setBounds(-15, -24, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+         this.getContentPane().add(background);
+         Image GameBG = Toolkit.getDefaultToolkit().getImage("Imagine\\Background.jpg").getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+         JComponent imageComponent = new ImageComponent(GameBG);// create an instance of ImageComponent
+         imageComponent.setSize(WIDTH,HEIGHT);
+         imageComponent.setLocation(0, 0); // set absolute location
+         this.add(imageComponent,JLayeredPane.FRAME_CONTENT_LAYER);
          **/
     }
 
@@ -96,20 +104,31 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         //每次增加回合了救引用这个方法
         add(statusLabel);
     }
-    public void viewCount(){
+
+    public void viewCount() {
         ++step;
-        statusLabel.setText(String.format("%s%d", "回合数: ", (step+1)/2));
-    }
-    public void redoStep(){
-        --step;
-        statusLabel.setText(String.format("%s%d", "回合数: ", (step+1)/2));
+        count = (step + 1) / 2;
+        statusLabel.setText(String.format("%s%d", "回合数: ", (step + 1) / 2));
     }
 
-    public void setStepAndCount(){
-        count=1;
-        step=1;
-        statusLabel.setText(String.format("%s%d", "回合数: ", (step+1)/2));
+    public void redoStep() {
+        --step;
+        count = (step + 1) / 2;
+        statusLabel.setText(String.format("%s%d", "回合数: ", (step + 1) / 2));
     }
+
+    public void loadStep(int step) {
+        this.step = step;
+        this.count = (step + 1) / 2;
+        statusLabel.setText(String.format("%s%d", "回合数: ", (step + 1) / 2));
+    }
+
+    public void setStepAndCount() {
+        count = 1;
+        step = 1;
+        statusLabel.setText(String.format("%s%d", "回合数: ", (step + 1) / 2));
+    }
+
     public void setGameController(GameController gameController) {
         this.controller = gameController;
     }
@@ -133,6 +152,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
             }
         }
     }
+
     /**
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
      */
@@ -146,15 +166,15 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     }
 
 
-
     public void moveHints() {
         JOptionPane.showMessageDialog(this, "步骤违规，请重试！");
     }
-    public void restartHints(){
+
+    public void restartHints() {
         JOptionPane.showMessageDialog(this, "请重新开始游戏！");
     }
 
-    public void redoWrongHints(){
+    public void redoWrongHints() {
         JOptionPane.showMessageDialog(this, "已经是第一步了！");
         /**JDialog redoDialog = new JDialog();
          redoDialog.setSize(200, 100);
@@ -177,7 +197,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     }
 
 
-
     private void addLoadButton() {
         JButton button = new JButton("读档");
         button.setLocation(HEIGTH, HEIGTH / 10 + 240);
@@ -185,11 +204,18 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         button.setFont(new Font("楷体", Font.BOLD, 20));
         add(button);
 
-       button.addActionListener(e -> {
-           System.out.println("Click load");
-           String path = JOptionPane.showInputDialog(this,"Input Path here");
-            controller.loadGameFromFile(path);
-      });
+        button.addActionListener(e -> {
+            System.out.println("读档");
+            //String path = JOptionPane.showInputDialog(this,"Input Path here");
+            try {
+                Path path = Path.of(FileChooser.chooseFile());
+                controller.loadGameFromFile(path.toString());
+            //} catch (IOException e1) {
+              //  e1.printStackTrace();
+            } catch (Exception e1) {
+                throw new RuntimeException(e1);
+            }
+        });
     }
 
     private void addSaveButton() {
@@ -200,8 +226,9 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         add(button);
 
         button.addActionListener(e -> {
-            System.out.println("Click save");
-            String path = JOptionPane.showInputDialog(this,"Input Path here");
+            System.out.println("存档");
+            String name = JOptionPane.showInputDialog(this, "Input name here");
+            String path = "Saved/" + "Saved " + name + " " + nowUser.getUsername()+".txt";
             controller.saveGameIntoFile(path);
         });
     }
@@ -256,22 +283,21 @@ public class ChessGameFrame extends JFrame implements ActionListener {
             System.exit(0);
         });
         //TODO:如何播放暂停
-        musicItem.addActionListener((e)->{
+        musicItem.addActionListener((e) -> {
             System.out.println("播放或者暂停音乐");
-            if(clip.isRunning()){
+            if (clip.isRunning()) {
                 clip.stop();
                 musicItem.setText("播放音乐");
-            }
-            else {
+            } else {
                 clip.start();
                 musicItem.setText("暂停音乐");
             }
         });
         //调整音量
-        volumeItem.addActionListener((e)->{
+        volumeItem.addActionListener((e) -> {
             System.out.println("调整音量");
             //this.setVolumeSlider();
-            VolumeFrame volume=new VolumeFrame();
+            VolumeFrame volume = new VolumeFrame();
             volume.setVisible(true);
         });
 
@@ -315,37 +341,36 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     }
 
     public void redWinDialog() {
-            JDialog winDialog = new JDialog();
-            winDialog.setSize(650, 350);
-            //让弹框置顶
-            winDialog.setAlwaysOnTop(true);
-            //让弹框居中
-            winDialog.setLocationRelativeTo(null);
-            //弹框不关闭永远无法操作下面的界面
-            winDialog.setModal(true);
+        JDialog winDialog = new JDialog();
+        winDialog.setSize(650, 350);
+        //让弹框置顶
+        winDialog.setAlwaysOnTop(true);
+        //让弹框居中
+        winDialog.setLocationRelativeTo(null);
+        //弹框不关闭永远无法操作下面的界面
+        winDialog.setModal(true);
 
-            JLabel winPlayerJLabel = new JLabel();
+        JLabel winPlayerJLabel = new JLabel();
 
 
-            winPlayerJLabel.setText("红方胜利！");
-            winPlayerJLabel.setFont(new Font("宋体", Font.BOLD, 30));
-            winPlayerJLabel.setForeground(Color.RED);
+        winPlayerJLabel.setText("红方胜利！");
+        winPlayerJLabel.setFont(new Font("宋体", Font.BOLD, 30));
+        winPlayerJLabel.setForeground(Color.RED);
 
-            Icon winJLabel = new ImageIcon("Imagine\\Victory.png");
-            winPlayerJLabel.setIcon(winJLabel);
+        Icon winJLabel = new ImageIcon("Imagine\\Victory.png");
+        winPlayerJLabel.setIcon(winJLabel);
 
-            winPlayerJLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-            winPlayerJLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+        winPlayerJLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        winPlayerJLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
 
-            winDialog.add(winPlayerJLabel);
+        winDialog.add(winPlayerJLabel);
 
-            winDialog.setVisible(true);
-            /**JOptionPane.showMessageDialog(this, "Imagine\\Victory.png");
-             JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
-             winJLabel.setBounds(203, 183, 597, 373);
-             this.getContentPane().add(winJLabel);**/
-        }
-
+        winDialog.setVisible(true);
+        /**JOptionPane.showMessageDialog(this, "Imagine\\Victory.png");
+         JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
+         winJLabel.setBounds(203, 183, 597, 373);
+         this.getContentPane().add(winJLabel);**/
+    }
 
 
     //监听是哪个按钮
