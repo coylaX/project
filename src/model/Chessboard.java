@@ -303,7 +303,7 @@ public class Chessboard {
 
         if(getChessPieceOwner(src)!=getChessPieceOwner(dest)&&bb){
             if(getChessPieceAt(src).rank>=getChessPieceAt(dest).rank
-                    &&(!(getChessPieceAt(src).rank==8&&getChessPieceAt(dest).rank==1)))
+                    &&(!(getChessPieceAt(src).rank==8&&getChessPieceAt(dest).rank==1))&&!dest.isRiver())
                 b = true;
             if(getChessPieceAt(src).rank==1&&getChessPieceAt(dest).rank==8&& !src.isRiver())
                 b = true;
