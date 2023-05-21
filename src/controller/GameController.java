@@ -8,6 +8,7 @@ import view.ChessComponent;
 import view.ChessGameFrame;
 import view.ChessboardComponent;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -202,13 +203,13 @@ public class GameController implements GameListener {
     * 6. view中根据现阶段model的内容重新add棋子
     * 7. view.repaint()
     * */
-    public void loadGameFromFile(String path){
+    public void loadGameFromFile(){
         try{
-            List<String> lines = Files.readAllLines(Path.of(path));
+            Path path=Path.of(FileChooser.chooseFile(0));
+            List<String> lines = Files.readAllLines(path);
             //错误判断
-            char[] formTest = path.toCharArray();
-            if(formTest[formTest.length-4]!='.'||formTest[formTest.length-3]!='t'||
-                    formTest[formTest.length-2]!='x'||formTest[formTest.length-1]!='t'){
+
+            if(isRightForm(path.toString())){
                 //101报错
             }
             else if(!isRightChessboard(lines)){
@@ -238,7 +239,24 @@ public class GameController implements GameListener {
             }
         }catch (IOException e){
             throw new RuntimeException(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
+    }
+    public boolean isRightForm(String in)
+    {
+        if(in.length()<4)
+            return false;
+        String tmp=in.substring(in.length()-4,in.length());
+        if(!tmp.toLowerCase().equals(".txt"))
+            return false;
+        return true;
     }
     public boolean isRightChessboard(List<String> Lines){
         boolean b = true;
@@ -320,19 +338,30 @@ public class GameController implements GameListener {
      * 6.
      * 7.
      * */
-    public void saveGameIntoFile(String path){
+    public void saveGameIntoFile(){
         try {
             ArrayList<String> saveGame = new ArrayList<String>();
+            saveGame = model.saveChessboardIntoFiles();
             String s = this.StepCount+"";
-            model.saveChessboardIntoFiles().add(s);
-            for (int i = 0; i < model.saveChessboardIntoFiles().size(); i++) {
-                System.out.println(model.saveChessboardIntoFiles().get(i));
+            saveGame.add(s);
+            for (int i = 0; i < saveGame.size(); i++) {
+                System.out.println(saveGame.get(i));
             }
-            Files.write(Path.of(path),model.saveChessboardIntoFiles(), Charset.defaultCharset());
+            Files.write(Path.of(FileChooser.chooseFile(1)+"/archive.txt"),saveGame, Charset.defaultCharset());
         }catch (IOException e){
+            throw new RuntimeException(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
+
+
 
 
 }
