@@ -35,6 +35,7 @@ public class GameController implements GameListener {
     private ChessGameFrame frame;
     private int StepCount =1;
     private List<Step> PieceStep=new ArrayList<Step>();
+    private List<ChessboardPoint> validMoves=new ArrayList<>();
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
@@ -78,6 +79,9 @@ public class GameController implements GameListener {
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
         if(!win()){
             if (selectedPoint != null && model.isValidMove(selectedPoint, point)) {
+
+                hideValidMoves();
+
                 //controller里更新步数
                 this.StepCount++;
                 //步骤List里添加当前步骤
@@ -128,14 +132,20 @@ public class GameController implements GameListener {
                     selectedPoint = point;
                     component.setSelected(true);
                     component.repaint();
+
+                    showValidMoves(point);
                 }
             } else if (selectedPoint.equals(point)) {//当前所选格子与鼠标点击的格子相同
+                hideValidMoves();
+
                 selectedPoint = null;
                 component.setSelected(false);
                 component.repaint();
             }
             // TODO: Implement capture function
             else if(selectedPoint!=null&&selectedPoint!=point&&model.isValidCapture(selectedPoint,point)){
+                hideValidMoves();
+
                 //controller 里更新步数
                 this.StepCount++;
                 //步骤List里添加当前步骤
@@ -178,6 +188,23 @@ public class GameController implements GameListener {
             }
         }
     }
+
+
+    //展示可移动棋子
+    public void showValidMoves(ChessboardPoint point) {
+        //test:是否是显示的问题，如果不出错则是数列返回值的问题
+        /**测试结果：返回数列的问题
+        ChessboardPoint test=new ChessboardPoint(2,2);
+        validMoves.add(test);
+        **/
+        validMoves = model.isPossibleMove(point);
+        view.showValidMoves(validMoves);
+    }
+    public void hideValidMoves() {
+        view.hideValidMoves(validMoves);
+    }
+
+
     public void restartGame(){//view里有需要这个方法的地方
         model.removeAllPieces();//model中清除所有棋子
         model.initPieces();//model中添加初始化棋子

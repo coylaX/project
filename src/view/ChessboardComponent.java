@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -179,5 +180,22 @@ public class ChessboardComponent extends JComponent {
     }
     public int getCHESS_SIZE() {
         return CHESS_SIZE;
+    }
+    //显示可移动的点
+    public void showValidMoves(List<ChessboardPoint> validMoves) {
+        for (ChessboardPoint validMove : validMoves) {
+            CellComponent cellComponent = getGridComponentAt(validMove);
+            cellComponent.setValidMove(true);
+            //paintImmediately(this.getBounds());
+            cellComponent.repaint();
+            System.out.println("显示可移动位置"+validMove);
+        }
+    }
+    public void hideValidMoves(List<ChessboardPoint> validMoves) {
+        for (ChessboardPoint validMove : validMoves) {
+            CellComponent cellComponent = getGridComponentAt(validMove);
+            cellComponent.setValidMove(false);
+            System.out.println("隐藏可移动位置" + validMove);
+        }
     }
 }
