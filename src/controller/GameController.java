@@ -326,22 +326,27 @@ public class GameController implements GameListener {
      * */
     public void loadGameFromFile(String path){
         try{
+            if(!isRightForm(path)){
+                System.out.println("101");
+                return;
+                //101报错
+            }
             List<String> lines = Files.readAllLines(Path.of(path));
             //错误判断
 
-            if(!isRightForm(path.toString())){
-                //101报错
 
-            }
-            else if(!isRightChessboard(lines)){
+            if(!isRightChessboard(lines)){
+                System.out.println("102");
                 //102报错
 
             }
             else if(!isRightChessPiece(lines)){
+                System.out.println("103");
                 //103报错
 
             }
             else if (!hasCount(lines)) {
+                System.out.println("104");
                 //104报错
             }
             else {
@@ -380,7 +385,8 @@ public class GameController implements GameListener {
             String l = Lines.get(i);
             lines.add(l);
         }
-        lines.remove(9);
+        if(lines.size()>9)
+            lines.remove(9);
         if(lines.size()!=9)
             b = false;
         else {
