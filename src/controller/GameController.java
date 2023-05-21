@@ -21,8 +21,7 @@ import java.util.List;
  * when a Controller receive a request from a view, the Controller
  * analyzes and then hands over to the model for processing
  * [in this demo the request methods are onPlayerClickCell() and onPlayerClickChessPiece()]
- *
-*/
+ */
 public class GameController implements GameListener {
 
 
@@ -33,27 +32,30 @@ public class GameController implements GameListener {
     // Record whether there is a selected piece before
     private ChessboardPoint selectedPoint;
     private ChessGameFrame frame;
-    private int StepCount =1;
-    private List<Step> PieceStep=new ArrayList<Step>();
-    private List<ChessboardPoint> validMoves=new ArrayList<>();
+    private int StepCount = 1;
+    private List<Step> PieceStep = new ArrayList<Step>();
+    private List<ChessboardPoint> validMoves = new ArrayList<>();
+
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
         this.currentPlayer = PlayerColor.BLUE;
 
         view.registerController(this);
-        initialize();
+        //initialize();
         view.initiateChessComponent(model);
         view.repaint();
     }
 
-    private void initialize() {
-        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
-            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
-
-            }
-        }
-    }
+    /**
+     * private void initialize() {
+     * for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+     * for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+     * <p>
+     * }
+     * }
+     * }
+     **/
 
     public void setFrame(ChessGameFrame frame) {
         this.frame = frame;
@@ -64,11 +66,12 @@ public class GameController implements GameListener {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
         frame.viewCurrentPlayer();
     }
-//改成了Public
+
+    //改成了Public
     public boolean win() {
         // TODO: Check the board if there is a winner
         boolean b = false;
-        if(model.isBLUEWin()|| model.isREDWin())
+        if (model.isBLUEWin() || model.isREDWin())
             b = true;
         return b;
     }
@@ -77,7 +80,7 @@ public class GameController implements GameListener {
     // click an empty cell
     @Override
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
-        if(!win()){
+        if (!win()) {
             if (selectedPoint != null && model.isValidMove(selectedPoint, point)) {
 
                 hideValidMoves();
@@ -85,8 +88,8 @@ public class GameController implements GameListener {
                 //controller里更新步数
                 this.StepCount++;
                 //步骤List里添加当前步骤
-                Step step =new Step(selectedPoint,point,model.getChessPieceAt(selectedPoint),
-                        null,getCurrentPlayer(),this.StepCount);
+                Step step = new Step(selectedPoint, point, model.getChessPieceAt(selectedPoint),
+                        null, getCurrentPlayer(), this.StepCount);
                 this.PieceStep.add(step);
                 //实体中移动棋子
                 model.moveChessPiece(selectedPoint, point);
@@ -101,21 +104,21 @@ public class GameController implements GameListener {
                 // ？？？TODO: if the chess enter Dens or Traps and so on
                 //更新回合数
                 frame.viewCount();
-                if(win()){
-                    if(model.isREDWin())
+                if (win()) {
+                    if (model.isREDWin())
                         frame.redWinDialog();
-                    else if(model.isBLUEWin())
+                    else if (model.isBLUEWin())
                         frame.blueWinDialog();
                 }
-            }else if(selectedPoint != null && !model.isValidMove(selectedPoint, point)){
+            } else if (selectedPoint != null && !model.isValidMove(selectedPoint, point)) {
                 frame.moveHints();
             }
             //如果胜利弹出胜利窗口
-        }else{
-            if(win()){
-                if(model.isREDWin())
+        } else {
+            if (win()) {
+                if (model.isREDWin())
                     frame.redWinDialog();
-                else if(model.isBLUEWin())
+                else if (model.isBLUEWin())
                     frame.blueWinDialog();
                 frame.restartHints();
             }
@@ -126,7 +129,7 @@ public class GameController implements GameListener {
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {
-        if(!win()){
+        if (!win()) {
             if (selectedPoint == null) {//当前所选的格子没有棋子
                 if (model.getChessPieceOwner(point).equals(currentPlayer)) {
                     selectedPoint = point;
@@ -143,14 +146,14 @@ public class GameController implements GameListener {
                 component.repaint();
             }
             // TODO: Implement capture function
-            else if(selectedPoint!=null&&selectedPoint!=point&&model.isValidCapture(selectedPoint,point)){
+            else if (selectedPoint != null && selectedPoint != point && model.isValidCapture(selectedPoint, point)) {
                 hideValidMoves();
 
                 //controller 里更新步数
                 this.StepCount++;
                 //步骤List里添加当前步骤
-                Step step =new Step(selectedPoint,point,model.getChessPieceAt(selectedPoint),
-                        model.getChessPieceAt(point), getCurrentPlayer(),this.StepCount);
+                Step step = new Step(selectedPoint, point, model.getChessPieceAt(selectedPoint),
+                        model.getChessPieceAt(point), getCurrentPlayer(), this.StepCount);
                 this.PieceStep.add(step);
                 //model中移除棋子
                 model.getGrid()[point.getRow()][point.getCol()].removePiece();
@@ -168,21 +171,21 @@ public class GameController implements GameListener {
                 view.repaint();
                 //更新回合数
                 frame.viewCount();
-                if(win()){
-                    if(model.isREDWin())
+                if (win()) {
+                    if (model.isREDWin())
                         frame.redWinDialog();
-                    else if(model.isBLUEWin())
+                    else if (model.isBLUEWin())
                         frame.blueWinDialog();
                 }
-            }else if(selectedPoint!=null&&selectedPoint!=point&&!model.isValidCapture(selectedPoint,point)){
+            } else if (selectedPoint != null && selectedPoint != point && !model.isValidCapture(selectedPoint, point)) {
                 frame.moveHints();
             }
         }//如果胜利弹出胜利窗口
-        else{
-            if(win()){
-                if(model.isREDWin())
+        else {
+            if (win()) {
+                if (model.isREDWin())
                     frame.redWinDialog();
-                else if(model.isBLUEWin())
+                else if (model.isBLUEWin())
                     frame.blueWinDialog();
                 frame.restartHints();
             }
@@ -194,18 +197,19 @@ public class GameController implements GameListener {
     public void showValidMoves(ChessboardPoint point) {
         //test:是否是显示的问题，如果不出错则是数列返回值的问题
         /**测试结果：返回数列的问题
-        ChessboardPoint test=new ChessboardPoint(2,2);
-        validMoves.add(test);
-        **/
+         ChessboardPoint test=new ChessboardPoint(2,2);
+         validMoves.add(test);
+         **/
         validMoves = model.isPossibleMove(point);
         view.showValidMoves(validMoves);
     }
+
     public void hideValidMoves() {
         view.hideValidMoves(validMoves);
     }
 
 
-    public void restartGame(){//view里有需要这个方法的地方
+    public void restartGame() {//view里有需要这个方法的地方
         model.removeAllPieces();//model中清除所有棋子
         model.initPieces();//model中添加初始化棋子
         view.removeAllPieces();//view中清除所有绘制过的棋子
@@ -222,36 +226,32 @@ public class GameController implements GameListener {
 
 
     /*load方法
-    * 1. 读取文件
-    * 2. 将文件里的内容转化成棋盘
-    * 3. model 清除所有棋子
-    * 4. model 根据文件内容初始化棋子
-    * 5. view中清除所有绘制棋子
-    * 6. view中根据现阶段model的内容重新add棋子
-    * 7. view.repaint()
-    * */
-    public void loadGameFromFile(String path){
-        try{
+     * 1. 读取文件
+     * 2. 将文件里的内容转化成棋盘
+     * 3. model 清除所有棋子
+     * 4. model 根据文件内容初始化棋子
+     * 5. view中清除所有绘制棋子
+     * 6. view中根据现阶段model的内容重新add棋子
+     * 7. view.repaint()
+     * */
+    public void loadGameFromFile(String path) {
+        try {
             List<String> lines = Files.readAllLines(Path.of(path));
             //错误判断
 
-            if(!isRightForm(path.toString())){
+            if (!isRightForm(path.toString())) {
                 //101报错
 
-            }
-            else if(!isRightChessboard(lines)){
+            } else if (!isRightChessboard(lines)) {
                 //102报错
 
-            }
-            else if(!isRightChessPiece(lines)){
+            } else if (!isRightChessPiece(lines)) {
                 //103报错
 
-            }
-            else if (!hasCount(lines)) {
+            } else if (!hasCount(lines)) {
                 //104报错
-            }
-            else {
-                for (String s:lines) {
+            } else {
+                for (String s : lines) {
                     System.out.println(s);
                 }
 
@@ -260,26 +260,27 @@ public class GameController implements GameListener {
                 view.removeAllPieces();
                 view.initiateChessComponent(model);
                 view.repaint();
-                int a = Integer.parseInt(lines.get(lines.size()-1));
-                if(a%2==0)
-                    this.currentPlayer=PlayerColor.RED;
+                int a = Integer.parseInt(lines.get(lines.size() - 1));
+                if (a % 2 == 0)
+                    this.currentPlayer = PlayerColor.RED;
                 else
-                    this.currentPlayer=PlayerColor.BLUE;
+                    this.currentPlayer = PlayerColor.BLUE;
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public boolean isRightForm(String in)
-    {
-        if(in.length()<4)
+
+    public boolean isRightForm(String in) {
+        if (in.length() < 4)
             return false;
-        String tmp=in.substring(in.length()-4,in.length());
-        if(!tmp.toLowerCase().equals(".txt"))
+        String tmp = in.substring(in.length() - 4, in.length());
+        if (!tmp.toLowerCase().equals(".txt"))
             return false;
         return true;
     }
-    public boolean isRightChessboard(List<String> Lines){
+
+    public boolean isRightChessboard(List<String> Lines) {
         boolean b = true;
         List<String> lines = new ArrayList<String>();
         for (int i = 0; i < Lines.size(); i++) {
@@ -287,39 +288,39 @@ public class GameController implements GameListener {
             lines.add(l);
         }
         lines.remove(9);
-        if(lines.size()!=9)
+        if (lines.size() != 9)
             b = false;
         else {
             for (int i = 0; i < 9; i++) {
                 char[] test = lines.get(i).toCharArray();
-                if(test.length!=7)
+                if (test.length != 7)
                     b = false;
             }
         }
         return b;
     }
-    public boolean isRightChessPiece(List<String> lines){
+
+    public boolean isRightChessPiece(List<String> lines) {
         boolean b = true;
         for (int i = 0; i < 9; i++) {
             char[] test = lines.get(i).toCharArray();
             for (int j = 0; j < 7; j++) {
-                if(test[j]!='空'&&test[j]!='相'&&test[j]!='象'&&test[j]!='獅'&&test[j]!='狮'&&test[j]!='琥'
-                        &&test[j]!='虎'&&test[j]!='犳'&&test[j]!='豹'&&test[j]!='琅'&&test[j]!='狼'&&test[j]!='豿'
-                        &&test[j]!='狗'&&test[j]!='貓'&&test[j]!='猫'&&test[j]!='黍'&&test[j]!='鼠')
+                if (test[j] != '空' && test[j] != '相' && test[j] != '象' && test[j] != '獅' && test[j] != '狮' && test[j] != '琥'
+                        && test[j] != '虎' && test[j] != '犳' && test[j] != '豹' && test[j] != '琅' && test[j] != '狼' && test[j] != '豿'
+                        && test[j] != '狗' && test[j] != '貓' && test[j] != '猫' && test[j] != '黍' && test[j] != '鼠')
                     b = false;
             }
         }
         return b;
     }
-    public boolean hasCount(List<String> Lines){
-        boolean b = true;
-        if(Lines.size()==9){
-            b = false;
-        }
 
-        else if (Lines.size()>9&&Lines.get(9)!=null) {
+    public boolean hasCount(List<String> Lines) {
+        boolean b = true;
+        if (Lines.size() == 9) {
+            b = false;
+        } else if (Lines.size() > 9 && Lines.get(9) != null) {
             int count = Integer.parseInt(Lines.get(9));
-            if(count<1){
+            if (count < 1) {
                 b = false;
             }
 
@@ -329,33 +330,37 @@ public class GameController implements GameListener {
     }
 
     //悔棋操作
-    public void withdraw(){
-        Step last = this.PieceStep.get(this.PieceStep.size()-1);
-        //删除PieceStep List中的最后一个
-        this.PieceStep.remove(this.PieceStep.size()-1);
-        this.StepCount--;
-        if(last.getEndChessPiece()==null){
-            //model层面移回棋子
-            model.moveChessPiece(last.getEnd(), last.getStart());
-            //????????view层面移回棋子
-            view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
+    public void withdraw() {
+        if (PieceStep.size()==0) {
+            System.out.println("已经是第一步了");
+            frame.redoWrongHints();
+        } else {
+            Step last = this.PieceStep.get(this.PieceStep.size() - 1);
+            //删除PieceStep List中的最后一个
+            this.PieceStep.remove(this.PieceStep.size() - 1);
+            this.StepCount--;
+            if (last.getEndChessPiece() == null) {
+                //model层面移回棋子
+                model.moveChessPiece(last.getEnd(), last.getStart());
+                //????????view层面移回棋子
+                view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
+                view.repaint();
+            } else if (last.getEndChessPiece() != null) {
+                //model层面移回棋子
+                model.moveChessPiece(last.getEnd(), last.getStart());
+                //????????view层面移回棋子
+                view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
+                //model层面将被吃棋子复原回去
+                model.getGrid()[last.getEnd().getRow()][last.getEnd().getCol()].setPiece(last.getEndChessPiece());
+                //?????????view层面将被吃棋子复原回去
+                ChessComponent beCapturedChess = new ChessComponent(last.getEndChessPiece().getOwner(),
+                        view.getCHESS_SIZE(), last.getEndChessPiece().getDisPlayName());
+                view.setChessComponentAtGrid(last.getEnd(), beCapturedChess);
+                view.repaint();
+            }
+            this.currentPlayer = last.getCurrentPlayer();
         }
-        else if(last.getEndChessPiece()!=null){
-            //model层面移回棋子
-            model.moveChessPiece(last.getEnd(), last.getStart());
-            //????????view层面移回棋子
-            view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
-            //model层面将被吃棋子复原回去
-            model.getGrid()[last.getEnd().getRow()][last.getEnd().getCol()].setPiece(last.getEndChessPiece());
-            //?????????view层面将被吃棋子复原回去
-            ChessComponent beCapturedChess =  new ChessComponent(last.getEndChessPiece().getOwner(),
-                    view.getCHESS_SIZE(),last.getEndChessPiece().getDisPlayName());
-            view.setChessComponentAtGrid(last.getEnd(), beCapturedChess);
-
-        }
-        this.currentPlayer=last.getCurrentPlayer();
     }
-
 
 
     /* save方法
@@ -367,22 +372,20 @@ public class GameController implements GameListener {
      * 6.
      * 7.
      * */
-    public void saveGameIntoFile(String path){
+    public void saveGameIntoFile(String path) {
         try {
             ArrayList<String> saveGame = new ArrayList<String>();
             saveGame = model.saveChessboardIntoFiles();
-            String s = this.StepCount+"";
+            String s = this.StepCount + "";
             saveGame.add(s);
             for (int i = 0; i < saveGame.size(); i++) {
                 System.out.println(saveGame.get(i));
             }
-            Files.write(Path.of(path),saveGame, Charset.defaultCharset());
-        }catch (IOException e){
+            Files.write(Path.of(path), saveGame, Charset.defaultCharset());
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 
 
 }

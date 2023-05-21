@@ -30,7 +30,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         this.music = music;
     }
 
-    JButton restartButton = new JButton("Restart");
+    JButton restartButton = new JButton("悔棋");
     JLabel playerLabel = new JLabel("当前回合:蓝方");
     JLabel statusLabel = new JLabel("回合数: " + count);
 
@@ -105,6 +105,9 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         step=1;
         statusLabel.setText(String.format("%s%d", "回合数: ", (step+1)/2));
     }
+    public void setGameController(GameController gameController) {
+        this.controller = gameController;
+    }
 
     // 显示currentPlayer
     public void addCurrentPlayer() {
@@ -133,9 +136,11 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         // button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Hello, world!"));
         restartButton.setLocation(HEIGTH, HEIGTH / 10 + 120);
         restartButton.setSize(200, 60);
-        restartButton.setFont(new Font("Rockwell", Font.BOLD, 20));
+        restartButton.setFont(new Font("楷体", Font.BOLD, 20));
         add(restartButton);
     }
+
+
 
     public void moveHints() {
         JOptionPane.showMessageDialog(this, "步骤违规，请重试！");
@@ -144,11 +149,35 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(this, "请重新开始游戏！");
     }
 
+    public void redoWrongHints(){
+        JOptionPane.showMessageDialog(this, "已经是第一步了！");
+        /**JDialog redoDialog = new JDialog();
+         redoDialog.setSize(200, 100);
+         //让弹框置顶
+         redoDialog.setAlwaysOnTop(true);
+         //让弹框居中
+         redoDialog.setLocationRelativeTo(null);
+         //弹框不关闭永远无法操作下面的界面
+         redoDialog.setModal(true);
+
+         JLabel redoWrongJLabel = new JLabel();
+
+
+         redoWrongJLabel.setText("已经是第一步！");
+         redoWrongJLabel.setFont(new Font("宋体", Font.BOLD, 5));
+         redoWrongJLabel.setForeground(Color.BLACK);
+
+         redoDialog.add(redoWrongJLabel);
+         redoDialog.setVisible(true);**/
+    }
+
+
+
     private void addLoadButton() {
-        JButton button = new JButton("Load");
+        JButton button = new JButton("读档");
         button.setLocation(HEIGTH, HEIGTH / 10 + 240);
         button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        button.setFont(new Font("楷体", Font.BOLD, 20));
         add(button);
 
        button.addActionListener(e -> {
@@ -159,10 +188,10 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     }
 
     private void addSaveButton() {
-        JButton button = new JButton("Save");
+        JButton button = new JButton("存档");
         button.setLocation(HEIGTH, HEIGTH / 10 + 360);
         button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        button.setFont(new Font("楷体", Font.BOLD, 20));
         add(button);
 
         button.addActionListener(e -> {
@@ -312,9 +341,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
              this.getContentPane().add(winJLabel);**/
         }
 
-    public void setGameController(GameController gameController) {
-        this.controller = gameController;
-    }
 
 
     //监听是哪个按钮
@@ -322,9 +348,9 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == restartButton) {
-            System.out.println("重置游戏");
-            controller.restartGame();
-            JOptionPane.showMessageDialog(this, "游戏已重置！");
+            System.out.println("悔棋");
+            controller.withdraw();
+            //JOptionPane.showMessageDialog(this, "游戏已重置！");
         }
     }
 }
