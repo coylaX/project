@@ -40,11 +40,11 @@ public class GameController implements GameListener {
     private int StepCount =1;
     private List<Step> PieceStep=new ArrayList<Step>();
     private List<ChessboardPoint> validMoves=new ArrayList<>();
-    public GameController(ChessboardComponent view, Chessboard model, GameMode gameMode) {//在view中设置多种模式
+    public GameController(ChessboardComponent view, Chessboard model ) {//在view中设置多种模式
         this.view = view;
         this.model = model;
         this.currentPlayer = PlayerColor.BLUE;
-        this.gameMode = gameMode;
+        //this.gameMode = gameMode;
 
 
         view.registerController(this);
