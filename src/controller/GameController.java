@@ -345,6 +345,7 @@ public class GameController implements GameListener {
                 //????????view层面移回棋子
                 view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
                 view.repaint();
+                frame.redoStep();
             } else if (last.getEndChessPiece() != null) {
                 //model层面移回棋子
                 model.moveChessPiece(last.getEnd(), last.getStart());
@@ -357,6 +358,7 @@ public class GameController implements GameListener {
                         view.getCHESS_SIZE(), last.getEndChessPiece().getDisPlayName());
                 view.setChessComponentAtGrid(last.getEnd(), beCapturedChess);
                 view.repaint();
+                frame.redoStep();
             }
             this.currentPlayer = last.getCurrentPlayer();
         }
@@ -386,6 +388,4 @@ public class GameController implements GameListener {
             throw new RuntimeException(e);
         }
     }
-
-
 }
