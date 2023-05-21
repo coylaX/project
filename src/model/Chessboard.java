@@ -266,11 +266,11 @@ public class Chessboard {
         else if(getChessPieceAt(src).rank==7||getChessPieceAt(src).rank==6){//判断是否为能够跳河的动物
             if(src.isBesideRiver()){//判断是否在河边
                 if(src.getCol()== dest.getCol()){
-                    if(Math.abs(src.getRow()- dest.getRow())==4&&(!isBlocked(src,dest)))
+                    if(Math.abs(src.getRow()- dest.getRow())==4&&(!isBlocked(src,dest))&&isAllRiver(src, dest))
                         return true;
                 }
                 if(src.getRow()== dest.getRow()){
-                    if(Math.abs(src.getCol()- dest.getCol())==3&&(!isBlocked(src,dest)))
+                    if(Math.abs(src.getCol()- dest.getCol())==3&&(!isBlocked(src,dest))&&isAllRiver(src, dest))
                         return true;
                 }
             }
@@ -287,11 +287,11 @@ public class Chessboard {
      if(getChessPieceAt(src).rank==7||getChessPieceAt(src).rank==6){//判断是否为能够跳河的动物
             if(src.isBesideRiver()){//判断是否在河边
                 if(src.getCol()== dest.getCol()){
-                    if(Math.abs(src.getRow()- dest.getRow())==4&&(!isBlocked(src,dest)))
+                    if(Math.abs(src.getRow()- dest.getRow())==4&&(!isBlocked(src,dest))&&isAllRiver(src, dest))
                         bb= true;
                 }
                 if(src.getRow()== dest.getRow()){
-                    if(Math.abs(src.getCol()- dest.getCol())==3&&(!isBlocked(src,dest)))
+                    if(Math.abs(src.getCol()- dest.getCol())==3&&(!isBlocked(src,dest))&&isAllRiver(src, dest))
                         bb= true;
                 }
             }
@@ -315,6 +315,30 @@ public class Chessboard {
         return b;
     }
 
+
+    public boolean isAllRiver(ChessboardPoint src, ChessboardPoint dest){
+        boolean bb = true;
+        if(src.getRow()==dest.getRow()){
+            for (int i = Math.min(src.getCol(), dest.getCol())+1;
+                 i < Math.max(src.getCol(), dest.getCol()); i++) {
+                ChessboardPoint p =new ChessboardPoint(src.getRow(),i);
+                if(!p.isRiver()){
+                    bb = false;
+                    break;
+                }
+            }
+        }
+        else if(src.getCol()==dest.getCol()){
+            for (int i = Math.min(src.getRow(),dest.getRow())+1;
+                 i < Math.max(src.getRow(),dest.getRow()); i++) {
+                ChessboardPoint p = new ChessboardPoint(i, src.getCol());
+                if(!p.isRiver())
+                    bb = false;
+
+            }
+        }
+        return bb;
+    }
 
     //判断蓝方是否获胜
     public boolean isBLUEWin(){
