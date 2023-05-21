@@ -127,7 +127,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
 
                 int mod = JOptionPane.showOptionDialog(null,"选择游戏模式",
                         "请选择游戏模式",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,
-                        null,new String[]{"双人","随机","贪心","剪枝"},"双人");
+                        null,new String[]{"双人","随机","贪心"},"双人");
 
                 GameMode gameMode=null;
                 if(mod==0){

@@ -19,9 +19,11 @@ import static view.MusicPlayer.clip;
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  */
 public class ChessGameFrame extends JFrame implements ActionListener {
+    JLayeredPane pane=new JLayeredPane();
     //    public final Dimension FRAME_SIZE ;
     private final int WIDTH;
     private final int HEIGTH;
+    private int WIDTH1,HEIGHT1;
 
     private final int ONE_CHESS_SIZE;
     private int count = 1;
@@ -47,8 +49,14 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         setTitle("斗兽棋"); //设置标题
         this.WIDTH = width;
         this.HEIGTH = height;
+        this.WIDTH1 = width;
+        this.HEIGHT1 = height;
         this.ONE_CHESS_SIZE = (HEIGTH * 4 / 5) / 9;
         //this.setAlwaysOnTop(true);
+
+        pane.setLocation(0,0);
+        pane.setSize(WIDTH,HEIGHT);
+        pane.setLayout(null);
 
         setSize(WIDTH, HEIGTH);
         setLocationRelativeTo(null); // Center the window.
@@ -65,6 +73,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         addJMenu();
         addCurrentPlayer();
         addGameBackground();
+        setContentPane(pane);
         /**JLabel background = new JLabel(new ImageIcon("Imagine\\Background.jpg"));
          //background.setBounds(-15, -24, 1124, 751);
          background.setBounds(-15, -24, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
@@ -91,7 +100,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
     private void addChessboard() {
         chessboardComponent = new ChessboardComponent(ONE_CHESS_SIZE);
         chessboardComponent.setLocation(WIDTH / 5, HEIGTH / 10 - ONE_CHESS_SIZE / 2);
-        add(chessboardComponent);
+        pane.add(chessboardComponent,JLayeredPane.MODAL_LAYER);
     }
 
     /**
@@ -102,8 +111,9 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         statusLabel.setLocation(HEIGTH + 40, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("楷体", Font.BOLD, 25));
+        statusLabel.setForeground(Color.RED);
         //每次增加回合了救引用这个方法
-        add(statusLabel);
+        pane.add(statusLabel,JLayeredPane.MODAL_LAYER);
     }
 
     public void viewCount() {
@@ -139,7 +149,8 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         playerLabel.setLocation(HEIGTH + 40, HEIGTH / 20);
         playerLabel.setSize(200, 60);
         playerLabel.setFont(new Font("楷体", Font.BOLD, 25));
-        add(playerLabel);
+        playerLabel.setForeground(Color.RED);
+        pane.add(playerLabel,JLayeredPane.MODAL_LAYER);
     }
 
     public void viewCurrentPlayer() {
@@ -163,14 +174,17 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         restartButton.setLocation(HEIGTH, HEIGTH / 10 + 120);
         restartButton.setSize(200, 60);
         restartButton.setFont(new Font("楷体", Font.BOLD, 20));
-        add(restartButton);
+        pane.add(restartButton,JLayeredPane.MODAL_LAYER);
     }
     private void addGameBackground(){
-        Image GameBG = Toolkit.getDefaultToolkit().getImage("Imagine/Background.jpg").getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+
+        Image GameBG = Toolkit.getDefaultToolkit().getImage("Imagine/Background.jpg").getScaledInstance(this.WIDTH1, this.HEIGHT1, Image.SCALE_SMOOTH);
+
         JComponent imageComponent = new ImageComponent(GameBG);
-        imageComponent.setSize(WIDTH,HEIGHT);
-        imageComponent.setLocation(0, 333); // set absolute location
-        this.add(imageComponent,JLayeredPane.FRAME_CONTENT_LAYER);
+        imageComponent.setSize(WIDTH1,HEIGHT1);
+        imageComponent.setLocation(0, 0); // set absolute location
+
+        pane.add(imageComponent,JLayeredPane.FRAME_CONTENT_LAYER);
     }
 
 
@@ -221,7 +235,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         button.setLocation(HEIGTH, HEIGTH / 10 + 240);
         button.setSize(200, 60);
         button.setFont(new Font("楷体", Font.BOLD, 20));
-        add(button);
+        pane.add(button,JLayeredPane.MODAL_LAYER);
 
         button.addActionListener(e -> {
             System.out.println("读档");
@@ -242,7 +256,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         button.setLocation(HEIGTH, HEIGTH / 10 + 360);
         button.setSize(200, 60);
         button.setFont(new Font("楷体", Font.BOLD, 20));
-        add(button);
+        pane.add(button,JLayeredPane.MODAL_LAYER);
 
         button.addActionListener(e -> {
             System.out.println("存档");

@@ -16,6 +16,7 @@ public class ImageComponent extends JComponent{
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(paintImage, 0, 0, paintImage.getWidth(this), paintImage.getHeight(this), this);
+            System.out.printf("sdsfd%d %d\n",paintImage.getWidth(this),paintImage.getHeight(this));
         }
 
 }
