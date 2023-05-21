@@ -194,13 +194,13 @@ public class GameController implements GameListener {
                 view.repaint();
                 //更新回合数
                 frame.viewCount();
-                aiMove();
                 if (win()) {
                     if (model.isREDWin())
                         frame.redWinDialog();
                     else if (model.isBLUEWin())
                         frame.blueWinDialog();
                 }
+                aiMove();
             } else if (selectedPoint != null && selectedPoint != point && !model.isValidCapture(selectedPoint, point)) {
                 frame.moveHints();
             }
@@ -287,6 +287,12 @@ public class GameController implements GameListener {
                     timer2.setRepeats(false);
                     timer2.start();
                 }
+            }
+            if (win()) {
+                if (model.isREDWin())
+                    frame.redWinDialog();
+                else if (model.isBLUEWin())
+                    frame.blueWinDialog();
             }
         }
     }
