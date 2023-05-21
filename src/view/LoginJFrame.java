@@ -1,5 +1,6 @@
 package view;
 
+import computerplayer.GameMode;
 import controller.GameController;
 import model.Chessboard;
 
@@ -125,7 +126,9 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 //打开游戏的主界面
                 //需要把当前登录的用户名传递给游戏界面
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
-                GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard());
+
+                //TODO:自主选择mode to play
+                GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(), GameMode.Normal);
                 mainFrame.setGameController(gameController);
                 gameController.setFrame(mainFrame);
                 mainFrame.setVisible(true);
