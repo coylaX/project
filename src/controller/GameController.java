@@ -38,13 +38,18 @@ public class GameController implements GameListener {
     private GameMode gameMode;
     private AIPlayer aiplayer;
     private int StepCount =1;
-    private List<Step> PieceStep=new ArrayList<Step>();
-    private List<ChessboardPoint> validMoves=new ArrayList<>();
+    private List<Step> PieceStep;
+    private List<ChessboardPoint> validMoves;
     public GameController(ChessboardComponent view, Chessboard model, GameMode gameMode) {
         this.view = view;
         this.model = model;
         this.currentPlayer = PlayerColor.BLUE;
         this.gameMode = gameMode;
+
+
+
+        this.PieceStep=new ArrayList<Step>();
+        this.validMoves=new ArrayList<>();
 
 
         view.registerController(this);

@@ -466,6 +466,16 @@ public class Chessboard {
 
 
 
+    public int valueFunction(ChessboardPoint target, ChessPiece srcPiece, PlayerColor destColor){
+        int b = 0;
+        b = -Math.abs(target.getRow()-8)-Math.abs(3-target.getCol())+20;//评估距离兽穴的远近
+        b = b * srcPiece.getRank();//考虑当前棋子的rank
+
+        return b;
+    }
+
+
+
 
 
 }
