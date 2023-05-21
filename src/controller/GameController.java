@@ -230,20 +230,22 @@ public class GameController implements GameListener {
     * 6. view中根据现阶段model的内容重新add棋子
     * 7. view.repaint()
     * */
-    public void loadGameFromFile(){
+    public void loadGameFromFile(String path){
         try{
-            Path path=Path.of(FileChooser.chooseFile(0));
-            List<String> lines = Files.readAllLines(path);
+            List<String> lines = Files.readAllLines(Path.of(path));
             //错误判断
 
-            if(isRightForm(path.toString())){
+            if(!isRightForm(path.toString())){
                 //101报错
+
             }
             else if(!isRightChessboard(lines)){
                 //102报错
+
             }
             else if(!isRightChessPiece(lines)){
                 //103报错
+
             }
             else if (!hasCount(lines)) {
                 //104报错
@@ -266,14 +268,6 @@ public class GameController implements GameListener {
             }
         }catch (IOException e){
             throw new RuntimeException(e);
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
         }
     }
     public boolean isRightForm(String in)
@@ -287,7 +281,11 @@ public class GameController implements GameListener {
     }
     public boolean isRightChessboard(List<String> Lines){
         boolean b = true;
-        List<String> lines = Lines;
+        List<String> lines = new ArrayList<String>();
+        for (int i = 0; i < Lines.size(); i++) {
+            String l = Lines.get(i);
+            lines.add(l);
+        }
         lines.remove(9);
         if(lines.size()!=9)
             b = false;
@@ -315,12 +313,16 @@ public class GameController implements GameListener {
     }
     public boolean hasCount(List<String> Lines){
         boolean b = true;
-        if(Lines.size()==9)
+        if(Lines.size()==9){
             b = false;
-        else if (Lines.size()==10&&Lines.get(9)!=null) {
+        }
+
+        else if (Lines.size()>9&&Lines.get(9)!=null) {
             int count = Integer.parseInt(Lines.get(9));
-            if(count<1)
+            if(count<1){
                 b = false;
+            }
+
 
         }
         return b;
@@ -365,7 +367,7 @@ public class GameController implements GameListener {
      * 6.
      * 7.
      * */
-    public void saveGameIntoFile(){
+    public void saveGameIntoFile(String path){
         try {
             ArrayList<String> saveGame = new ArrayList<String>();
             saveGame = model.saveChessboardIntoFiles();
@@ -374,16 +376,8 @@ public class GameController implements GameListener {
             for (int i = 0; i < saveGame.size(); i++) {
                 System.out.println(saveGame.get(i));
             }
-            Files.write(Path.of(FileChooser.chooseFile(1)+"/archive.txt"),saveGame, Charset.defaultCharset());
+            Files.write(Path.of(path),saveGame, Charset.defaultCharset());
         }catch (IOException e){
-            throw new RuntimeException(e);
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

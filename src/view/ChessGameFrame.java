@@ -154,7 +154,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
        button.addActionListener(e -> {
            System.out.println("Click load");
            String path = JOptionPane.showInputDialog(this,"Input Path here");
-            controller.loadGameFromFile();
+            controller.loadGameFromFile(path);
       });
     }
 
@@ -168,7 +168,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         button.addActionListener(e -> {
             System.out.println("Click save");
             String path = JOptionPane.showInputDialog(this,"Input Path here");
-            controller.saveGameIntoFile();
+            controller.saveGameIntoFile(path);
         });
     }
 
