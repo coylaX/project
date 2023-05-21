@@ -339,7 +339,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
 
         ruleItem.addActionListener((e) -> {
             System.out.println("打开说明");
-            //TODO：如何打开本地文件
+            showRules();
         });
     }
 
@@ -406,6 +406,46 @@ public class ChessGameFrame extends JFrame implements ActionListener {
          JLabel winJLabel = new JLabel(new ImageIcon("Imagine\\Victory.png"));
          winJLabel.setBounds(203, 183, 597, 373);
          this.getContentPane().add(winJLabel);**/
+    }
+    public void showRules(){
+        String Rules="游戏开始时，红方先走，然后轮流走棋。每次可走动一只兽，每只兽每次走一方格，除己方兽穴和小河以外，前后左右均可。但是，狮、虎、鼠还有不同走法：\n" +
+                "狮虎跳河法：狮虎在小河边时，可以纵横对直跳过小河，且能把小河对岸的敌方较小的兽类吃掉，但是如果对方老鼠在河里，把跳的路线阻隔就不能跳，若对岸是对方比自己战斗力强的兽，也不可以跳过小河；\n" +
+                "鼠游过河法：只有鼠是可以走入小河的兽，走法同陆地上一样，每次走一格，上下左右均可，而且，陆地上的其他兽不可以吃小河中的鼠，小河中的鼠也不能吃陆地上的象，鼠类互吃不受小河影响。" +
+                "斗兽棋吃法分普通吃法和特殊吃法，普通吃法是按照兽的战斗力强弱，强者可以吃弱者。\n" +
+                "特殊吃法如下：\n" +
+                "1、鼠吃象法：八兽的吃法除按照战斗力强弱次序外，惟鼠能吃象，象不能吃鼠。\n" +
+                "2、互吃法：凡同类相遇，可互相吃。\n" +
+                "3、陷阱：棋盘设陷阱，专为限制敌兽的战斗力（自己的兽，不受限制），敌兽走入陷阱，即失去战斗力，本方的任意兽类都可以吃去陷阱里的兽类。\n" +
+                "综合普通吃法和特殊吃法，将斗兽棋此法总结如下：\n" +
+                "鼠可以吃鼠、象；\n" +
+                "猫可以吃猫、鼠；\n" +
+                "狗可以吃狗、猫、鼠；\n" +
+                "狼可以吃狼、狗、猫、鼠；\n" +
+                "豹可以吃豹、狼、狗、猫、鼠；\n" +
+                "虎可以吃虎、豹、狼、狗、猫、鼠；\n" +
+                "狮可以吃狮、虎、豹、狼、狗、猫、鼠；\n" +
+                "象可以吃象、狮、虎、豹、狼、狗、猫；\n" +
+                "【斗兽棋胜负判定】\n" +
+                "1、任何一方的兽走入敌方的兽穴就算胜利（自己的兽类不可以走入自己的兽穴）；\n" +
+                "2、任何一方的兽被吃光就算失败，对方获胜；\n" +
+                "3、任何一方所有活着的兽被对方困住，均不可移动时，就算失败，对方获胜；\n" +
+                "4、任何一方走棋时间用完，就算失败，对方获胜；\n" +
+                "5、任何一方中途离开游戏，就算逃跑，对方获胜；\n" +
+                "6、在双方同意的情况下可和棋；\n" +
+                "7、在连续100回合内，双方均无动物被吃，就算和棋。";
+
+        JTextArea text = new JTextArea(Rules);
+        text.setWrapStyleWord(true);
+        text.setLineWrap(true);
+        text.setEditable(false);
+        text.setMargin(new Insets(10, 10, 10, 10));
+        text.setCaretPosition(0);
+
+        JScrollPane scrollPane = new JScrollPane(text);
+        scrollPane.setPreferredSize(new Dimension(350, 300));
+
+        JOptionPane.showMessageDialog(null, scrollPane,
+                "斗兽棋规则", JOptionPane.PLAIN_MESSAGE);
     }
 
 
