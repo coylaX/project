@@ -64,7 +64,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         addSaveButton();
         addJMenu();
         addCurrentPlayer();
-
+        addGameBackground();
         /**JLabel background = new JLabel(new ImageIcon("Imagine\\Background.jpg"));
          //background.setBounds(-15, -24, 1124, 751);
          background.setBounds(-15, -24, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
@@ -165,6 +165,13 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         restartButton.setFont(new Font("楷体", Font.BOLD, 20));
         add(restartButton);
     }
+    private void addGameBackground(){
+        Image GameBG = Toolkit.getDefaultToolkit().getImage("Imagine/Background.jpg").getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+        JComponent imageComponent = new ImageComponent(GameBG);
+        imageComponent.setSize(WIDTH,HEIGHT);
+        imageComponent.setLocation(0, 333); // set absolute location
+        this.add(imageComponent,JLayeredPane.FRAME_CONTENT_LAYER);
+    }
 
 
     public void moveHints() {
@@ -259,7 +266,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         JMenuItem modeItem = new JMenuItem("切换模式");
 
         JMenuItem ruleItem = new JMenuItem("规则");
-        JMenuItem flagItem = new JMenuItem("标志说明");
         JMenuItem aboutItem = new JMenuItem("制作人员");
 
         functionJMenu.add(replayItem);
@@ -270,7 +276,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         functionJMenu.add(modeItem);
 
         aboutJMenu.add(ruleItem);
-        aboutJMenu.add(flagItem);
         aboutJMenu.add(aboutItem);
 
         jMenuBar.add(functionJMenu);
@@ -318,7 +323,7 @@ public class ChessGameFrame extends JFrame implements ActionListener {
             System.out.println("切换游戏模式");
             int mod = JOptionPane.showOptionDialog(null,"选择游戏模式",
                     "请选择游戏模式",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,
-                    null,new String[]{"双人","随机","贪心","剪枝"},"双人");
+                    null,new String[]{"双人","随机","贪心"},"双人");
 
             GameMode gameMode=null;
             if(mod==0){
@@ -330,9 +335,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
             }else if(mod==2){
                 System.out.println("贪心");
                 gameMode=GameMode.Greedy;
-            }else if(mod==3){
-                System.out.println("剪枝");
-                //gameMode=GameMode.;
             }
             controller.setGameMode(gameMode);
         });
@@ -340,6 +342,10 @@ public class ChessGameFrame extends JFrame implements ActionListener {
         ruleItem.addActionListener((e) -> {
             System.out.println("打开说明");
             showRules();
+        });
+        aboutItem.addActionListener((e) -> {
+            System.out.println("制作人员");
+            showAbout();
         });
     }
 
@@ -446,6 +452,29 @@ public class ChessGameFrame extends JFrame implements ActionListener {
 
         JOptionPane.showMessageDialog(null, scrollPane,
                 "斗兽棋规则", JOptionPane.PLAIN_MESSAGE);
+    }
+    public void showAbout(){
+
+        JDialog jDialog = new JDialog();
+
+        JLabel jLabel = new JLabel("制作人员：" +
+                "后端 王一嘉" +
+                "前端 许可");
+        jLabel.setFont(new Font("楷体", Font.BOLD, 15));
+
+        jLabel.setBounds(0,0,600,900);
+
+        jDialog.getContentPane().add(jLabel);
+
+        jDialog.setSize(350,150);
+
+        jDialog.setAlwaysOnTop(true);
+
+        jDialog.setLocationRelativeTo(null);
+
+        jDialog.setModal(true);
+
+        jDialog.setVisible(true);
     }
 
 
