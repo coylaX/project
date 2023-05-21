@@ -38,8 +38,8 @@ public class GameController implements GameListener {
     private GameMode gameMode;
     private AIPlayer aiplayer;
     private int StepCount =1;
-    private List<Step> PieceStep;
-    private List<ChessboardPoint> validMoves;
+    private List<Step> PieceStep=new ArrayList<Step>();
+    private List<ChessboardPoint> validMoves=new ArrayList<>();
     public GameController(ChessboardComponent view, Chessboard model, GameMode gameMode) {
         this.view = view;
         this.model = model;
@@ -47,16 +47,12 @@ public class GameController implements GameListener {
         this.gameMode = gameMode;
 
 
-
-        this.PieceStep=new ArrayList<Step>();
-        this.validMoves=new ArrayList<>();
-
-
         view.registerController(this);
         initialize();
         view.initiateChessComponent(model);
         view.repaint();
 
+        //TODO:设置一个方法，可以更换Player（重置），并在那个选项中使用
         if(this.gameMode==GameMode.Random||this.gameMode==GameMode.Greedy)
             this.aiplayer=new AIPlayer(this.gameMode,model);
 
@@ -74,11 +70,17 @@ public class GameController implements GameListener {
         this.frame = frame;
     }
 
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
     // after a valid move swap the player
     private void swapColor() {
         currentPlayer = currentPlayer == PlayerColor.BLUE ? PlayerColor.RED : PlayerColor.BLUE;
         frame.viewCurrentPlayer();
     }
+
+
     //改成了Public
     public boolean win() {
         // TODO: Check the board if there is a winner
@@ -338,7 +340,7 @@ public class GameController implements GameListener {
             if(!isRightChessboard(lines)){
                 System.out.println("102");
                 //102报错
-
+                System.out.println("error");
             }
             else if(!isRightChessPiece(lines)){
                 System.out.println("103");
@@ -430,30 +432,36 @@ public class GameController implements GameListener {
 
     //悔棋操作
     public void withdraw(){
-        Step last = this.PieceStep.get(this.PieceStep.size()-1);
-        //删除PieceStep List中的最后一个
-        this.PieceStep.remove(this.PieceStep.size()-1);
-        this.StepCount--;
-        if(last.getEndChessPiece()==null){
-            //model层面移回棋子
-            model.moveChessPiece(last.getEnd(), last.getStart());
-            //????????view层面移回棋子
-            view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
+        if(this.PieceStep.size()==0){
+            frame.redoWrongHints();
+        }else {
+            Step last = this.PieceStep.get(this.PieceStep.size() - 1);
+            //删除PieceStep List中的最后一个
+            this.PieceStep.remove(this.PieceStep.size() - 1);
+            this.StepCount--;
+            if (last.getEndChessPiece() == null) {
+                //model层面移回棋子
+                model.moveChessPiece(last.getEnd(), last.getStart());
+                //????????view层面移回棋子
+                view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
+                view.repaint();
+                frame.redoStep();
+            } else if (last.getEndChessPiece() != null) {
+                //model层面移回棋子
+                model.moveChessPiece(last.getEnd(), last.getStart());
+                //????????view层面移回棋子
+                view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
+                //model层面将被吃棋子复原回去
+                model.getGrid()[last.getEnd().getRow()][last.getEnd().getCol()].setPiece(last.getEndChessPiece());
+                //?????????view层面将被吃棋子复原回去
+                ChessComponent beCapturedChess = new ChessComponent(last.getEndChessPiece().getOwner(),
+                        view.getCHESS_SIZE(), last.getEndChessPiece().getDisPlayName());
+                view.setChessComponentAtGrid(last.getEnd(), beCapturedChess);
+                view.repaint();
+                frame.redoStep();
+            }
+            this.currentPlayer = last.getCurrentPlayer();
         }
-        else if(last.getEndChessPiece()!=null){
-            //model层面移回棋子
-            model.moveChessPiece(last.getEnd(), last.getStart());
-            //????????view层面移回棋子
-            view.setChessComponentAtGrid(last.getStart(), view.removeChessComponentAtGrid(last.getEnd()));
-            //model层面将被吃棋子复原回去
-            model.getGrid()[last.getEnd().getRow()][last.getEnd().getCol()].setPiece(last.getEndChessPiece());
-            //?????????view层面将被吃棋子复原回去
-            ChessComponent beCapturedChess =  new ChessComponent(last.getEndChessPiece().getOwner(),
-                    view.getCHESS_SIZE(),last.getEndChessPiece().getDisPlayName());
-            view.setChessComponentAtGrid(last.getEnd(), beCapturedChess);
-
-        }
-        this.currentPlayer=last.getCurrentPlayer();
     }
 
 
