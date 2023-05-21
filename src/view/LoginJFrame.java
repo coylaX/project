@@ -123,12 +123,33 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 System.out.println("登陆成功！游戏开始");
                 //关闭当前登录界面
                 this.setVisible(false);
+                this.dispose();
+
+                int mod = JOptionPane.showOptionDialog(null,"选择游戏模式",
+                        "请选择游戏模式",JOptionPane.DEFAULT_OPTION,JOptionPane.QUESTION_MESSAGE,
+                        null,new String[]{"双人","随机","贪心","剪枝"},"双人");
+
+                GameMode gameMode=null;
+                if(mod==0){
+                    System.out.println("双人");
+                    gameMode=GameMode.Normal;
+                }else if(mod==1){
+                    System.out.println("随机");
+                    gameMode=GameMode.Random;
+                }else if(mod==2){
+                    System.out.println("贪心");
+                    gameMode=GameMode.Greedy;
+                }else if(mod==3){
+                    System.out.println("剪枝");
+                    //gameMode=GameMode.;
+                }
+
                 //打开游戏的主界面
                 //需要把当前登录的用户名传递给游戏界面
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
 
-                //TODO:自主选择mode to play
-                GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard());
+                //TODO:自主选择mode to play,传入mode
+                GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(),gameMode);
                 mainFrame.setGameController(gameController);
                 gameController.setFrame(mainFrame);
                 mainFrame.setVisible(true);
