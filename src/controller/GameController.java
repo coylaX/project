@@ -23,7 +23,6 @@ import java.util.List;
  * when a Controller receive a request from a view, the Controller
  * analyzes and then hands over to the model for processing
  * [in this demo the request methods are onPlayerClickCell() and onPlayerClickChessPiece()]
- *
  */
 public class GameController implements GameListener {
 
@@ -37,9 +36,10 @@ public class GameController implements GameListener {
     private ChessGameFrame frame;
     private GameMode gameMode;
     private AIPlayer aiplayer;
-    private int StepCount =1;
-    private List<Step> PieceStep=new ArrayList<Step>();
-    private List<ChessboardPoint> validMoves=new ArrayList<>();
+    private int StepCount = 1;
+    private List<Step> PieceStep = new ArrayList<Step>();
+    private List<ChessboardPoint> validMoves = new ArrayList<>();
+
     public GameController(ChessboardComponent view, Chessboard model, GameMode gameMode) {
         this.view = view;
         this.model = model;
@@ -53,9 +53,16 @@ public class GameController implements GameListener {
         view.repaint();
 
         //TODO:设置一个方法，可以更换Player（重置），并在那个选项中使用
-        if(this.gameMode==GameMode.Random||this.gameMode==GameMode.Greedy)
-            this.aiplayer=new AIPlayer(this.gameMode,model);
+        if (this.gameMode == GameMode.Random || this.gameMode == GameMode.Greedy)
+            this.aiplayer = new AIPlayer(this.gameMode, model);
 
+    }
+
+    private void chageAI() {
+        if (this.gameMode == GameMode.Random || this.gameMode == GameMode.Greedy)
+            this.aiplayer = new AIPlayer(this.gameMode, model);
+        else if (this.gameMode == GameMode.Normal)
+            this.aiplayer = null;
     }
 
     private void initialize() {
@@ -72,6 +79,7 @@ public class GameController implements GameListener {
 
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
+        chageAI();
     }
 
     // after a valid move swap the player
@@ -85,7 +93,7 @@ public class GameController implements GameListener {
     public boolean win() {
         // TODO: Check the board if there is a winner
         boolean b = false;
-        if(model.isBLUEWin()|| model.isREDWin())
+        if (model.isBLUEWin() || model.isREDWin())
             b = true;
         return b;
     }
@@ -94,7 +102,7 @@ public class GameController implements GameListener {
     // click an empty cell
     @Override
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
-        if(!win()){
+        if (!win()) {
             if (selectedPoint != null && model.isValidMove(selectedPoint, point)) {
 
                 hideValidMoves();
@@ -102,8 +110,8 @@ public class GameController implements GameListener {
                 //controller里更新步数
                 this.StepCount++;
                 //步骤List里添加当前步骤
-                Step step =new Step(selectedPoint,point,model.getChessPieceAt(selectedPoint),
-                        null,getCurrentPlayer(),this.StepCount);
+                Step step = new Step(selectedPoint, point, model.getChessPieceAt(selectedPoint),
+                        null, getCurrentPlayer(), this.StepCount);
                 this.PieceStep.add(step);
                 //实体中移动棋子
                 model.moveChessPiece(selectedPoint, point);
@@ -119,21 +127,21 @@ public class GameController implements GameListener {
                 //更新回合数
                 frame.viewCount();
                 aiMove();
-                if(win()){
-                    if(model.isREDWin())
+                if (win()) {
+                    if (model.isREDWin())
                         frame.redWinDialog();
-                    else if(model.isBLUEWin())
+                    else if (model.isBLUEWin())
                         frame.blueWinDialog();
                 }
-            }else if(selectedPoint != null && !model.isValidMove(selectedPoint, point)){
+            } else if (selectedPoint != null && !model.isValidMove(selectedPoint, point)) {
                 frame.moveHints();
             }
             //如果胜利弹出胜利窗口
-        }else{
-            if(win()){
-                if(model.isREDWin())
+        } else {
+            if (win()) {
+                if (model.isREDWin())
                     frame.redWinDialog();
-                else if(model.isBLUEWin())
+                else if (model.isBLUEWin())
                     frame.blueWinDialog();
                 frame.restartHints();
             }
@@ -144,7 +152,7 @@ public class GameController implements GameListener {
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {
-        if(!win()){
+        if (!win()) {
             if (selectedPoint == null) {//当前所选的格子没有棋子
                 if (model.getChessPieceOwner(point).equals(currentPlayer)) {
                     selectedPoint = point;
@@ -161,14 +169,14 @@ public class GameController implements GameListener {
                 component.repaint();
             }
             // TODO: Implement capture function
-            else if(selectedPoint!=null&&selectedPoint!=point&&model.isValidCapture(selectedPoint,point)){
+            else if (selectedPoint != null && selectedPoint != point && model.isValidCapture(selectedPoint, point)) {
                 hideValidMoves();
 
                 //controller 里更新步数
                 this.StepCount++;
                 //步骤List里添加当前步骤
-                Step step =new Step(selectedPoint,point,model.getChessPieceAt(selectedPoint),
-                        model.getChessPieceAt(point), getCurrentPlayer(),this.StepCount);
+                Step step = new Step(selectedPoint, point, model.getChessPieceAt(selectedPoint),
+                        model.getChessPieceAt(point), getCurrentPlayer(), this.StepCount);
                 this.PieceStep.add(step);
                 //model中移除棋子
                 model.getGrid()[point.getRow()][point.getCol()].removePiece();
@@ -187,21 +195,21 @@ public class GameController implements GameListener {
                 //更新回合数
                 frame.viewCount();
                 aiMove();
-                if(win()){
-                    if(model.isREDWin())
+                if (win()) {
+                    if (model.isREDWin())
                         frame.redWinDialog();
-                    else if(model.isBLUEWin())
+                    else if (model.isBLUEWin())
                         frame.blueWinDialog();
                 }
-            }else if(selectedPoint!=null&&selectedPoint!=point&&!model.isValidCapture(selectedPoint,point)){
+            } else if (selectedPoint != null && selectedPoint != point && !model.isValidCapture(selectedPoint, point)) {
                 frame.moveHints();
             }
         }//如果胜利弹出胜利窗口
-        else{
-            if(win()){
-                if(model.isREDWin())
+        else {
+            if (win()) {
+                if (model.isREDWin())
                     frame.redWinDialog();
-                else if(model.isBLUEWin())
+                else if (model.isBLUEWin())
                     frame.blueWinDialog();
                 frame.restartHints();
             }
@@ -209,75 +217,76 @@ public class GameController implements GameListener {
     }
 
 
-
     //AI 移动棋子
     private void aiMove() {
-        if (aiplayer != null && currentPlayer == PlayerColor.RED) {
-            int turn = this.StepCount/2;
-            Step aiStep = aiplayer.generateMove(currentPlayer,turn);
-            if (aiStep != null) {
-                //显示此时轮到AI行进 view.setAIPlaying(true);
-                selectedPoint = aiStep.getStart();
-                //显示选中的棋子 view.showSelectedPoint(selectedPoint);
+        if (!win()) {
+            if (aiplayer != null && currentPlayer == PlayerColor.RED) {
+                int turn = this.StepCount / 2;
+                Step aiStep = aiplayer.generateMove(currentPlayer, turn);
+                if (aiStep != null) {
+                    //显示此时轮到AI行进 view.setAIPlaying(true);
+                    selectedPoint = aiStep.getStart();
+                    //显示选中的棋子 view.showSelectedPoint(selectedPoint);
 
-                Timer timer1 = new Timer(1000, e -> {
-                    //view.hideSelectedPoint(selectedPoint);
-                    showValidMoves(selectedPoint);
-                });
+                    Timer timer1 = new Timer(1000, e -> {
+                        //view.hideSelectedPoint(selectedPoint);
+                        showValidMoves(selectedPoint);
+                    });
 
-                timer1.setRepeats(false);
-                timer1.start();
+                    timer1.setRepeats(false);
+                    timer1.start();
 
-                // 使用javax.swing.Timer创建一个定时器
-                Timer timer2 = new Timer(2000, e -> {
-                    hideValidMoves();
-                    selectedPoint = null;
-
-                    this.PieceStep.add(aiStep);
-                    if(aiStep.getEndChessPiece()==null){
-                        //controller里更新步数
-                        this.StepCount++;
-                        //实体中移动棋子
-                        model.moveChessPiece(aiStep.getStart(), aiStep.getEnd());
-                        //画面上移动棋子
-                        view.setChessComponentAtGrid(aiStep.getEnd(), view.removeChessComponentAtGrid(aiStep.getStart()));
-                        //归零
+                    // 使用javax.swing.Timer创建一个定时器
+                    Timer timer2 = new Timer(2000, e -> {
+                        hideValidMoves();
                         selectedPoint = null;
-                        //切换棋手
-                        swapColor();
-                        //重绘制
-                        view.repaint();
-                        // ？？？TODO: if the chess enter Dens or Traps and so on
-                        //更新回合数
-                        frame.viewCount();
-                    }else if(aiStep.getEndChessPiece()!=null){
-                        //controller 里更新步数
-                        this.StepCount++;
-                        //model中移除棋子
-                        model.getGrid()[aiStep.getEnd().getRow()][aiStep.getEnd().getCol()].removePiece();
-                        //显示中移除棋子
-                        view.removeChessComponentAtGrid(aiStep.getEnd());
-                        //实体中移动棋子
-                        model.moveChessPiece(aiStep.getStart(),aiStep.getEnd());
-                        //画面上移动棋子
-                        view.setChessComponentAtGrid(aiStep.getEnd(), view.removeChessComponentAtGrid(aiStep.getStart()));
-                        //归零
-                        selectedPoint = null;
-                        //切换棋手
-                        swapColor();
-                        //重绘制
-                        view.repaint();
-                        //更新回合数
-                        frame.viewCount();
 
-                    }
+                        this.PieceStep.add(aiStep);
+                        if (aiStep.getEndChessPiece() == null) {
+                            //controller里更新步数
+                            this.StepCount++;
+                            //实体中移动棋子
+                            model.moveChessPiece(aiStep.getStart(), aiStep.getEnd());
+                            //画面上移动棋子
+                            view.setChessComponentAtGrid(aiStep.getEnd(), view.removeChessComponentAtGrid(aiStep.getStart()));
+                            //归零
+                            selectedPoint = null;
+                            //切换棋手
+                            swapColor();
+                            //重绘制
+                            view.repaint();
+                            // ？？？TODO: if the chess enter Dens or Traps and so on
+                            //更新回合数
+                            frame.viewCount();
+                        } else if (aiStep.getEndChessPiece() != null) {
+                            //controller 里更新步数
+                            this.StepCount++;
+                            //model中移除棋子
+                            model.getGrid()[aiStep.getEnd().getRow()][aiStep.getEnd().getCol()].removePiece();
+                            //显示中移除棋子
+                            view.removeChessComponentAtGrid(aiStep.getEnd());
+                            //实体中移动棋子
+                            model.moveChessPiece(aiStep.getStart(), aiStep.getEnd());
+                            //画面上移动棋子
+                            view.setChessComponentAtGrid(aiStep.getEnd(), view.removeChessComponentAtGrid(aiStep.getStart()));
+                            //归零
+                            selectedPoint = null;
+                            //切换棋手
+                            swapColor();
+                            //重绘制
+                            view.repaint();
+                            //更新回合数
+                            frame.viewCount();
 
-                    //把显示是AI行进关掉 view.setAIPlaying(false);
-                });
+                        }
 
-                // 设置定时器只执行一次
-                timer2.setRepeats(false);
-                timer2.start();
+                        //把显示是AI行进关掉 view.setAIPlaying(false);
+                    });
+
+                    // 设置定时器只执行一次
+                    timer2.setRepeats(false);
+                    timer2.start();
+                }
             }
         }
     }
@@ -293,12 +302,13 @@ public class GameController implements GameListener {
         validMoves = model.isPossibleMove(point);
         view.showValidMoves(validMoves);
     }
+
     public void hideValidMoves() {
         view.hideValidMoves(validMoves);
     }
 
 
-    public void restartGame(){//view里有需要这个方法的地方
+    public void restartGame() {//view里有需要这个方法的地方
         model.removeAllPieces();//model中清除所有棋子
         model.initPieces();//model中添加初始化棋子
         view.removeAllPieces();//view中清除所有绘制过的棋子
@@ -309,7 +319,7 @@ public class GameController implements GameListener {
         frame.setStepAndCount();
         PieceStep.clear();
         validMoves.clear();
-        this.StepCount=1;
+        this.StepCount = 1;
     }
 
     public PlayerColor getCurrentPlayer() {
@@ -326,9 +336,9 @@ public class GameController implements GameListener {
      * 6. view中根据现阶段model的内容重新add棋子
      * 7. view.repaint()
      * */
-    public void loadGameFromFile(String path){
-        try{
-            if(!isRightForm(path)){
+    public void loadGameFromFile(String path) {
+        try {
+            if (!isRightForm(path)) {
                 System.out.println("101");
                 frame.wrong101Hint();
                 return;
@@ -338,25 +348,22 @@ public class GameController implements GameListener {
             //错误判断
 
 
-            if(!isRightChessboard(lines)){
+            if (!isRightChessboard(lines)) {
                 System.out.println("102");
                 //102报错
                 System.out.println("error");
                 frame.wrong102Hint();
-            }
-            else if(!isRightChessPiece(lines)){
+            } else if (!isRightChessPiece(lines)) {
                 System.out.println("103");
                 //103报错
                 frame.wrong103Hint();
 
-            }
-            else if (!hasCount(lines)) {
+            } else if (!hasCount(lines)) {
                 System.out.println("104");
                 frame.wrong104Hint();
                 //104报错
-            }
-            else {
-                for (String s:lines) {
+            } else {
+                for (String s : lines) {
                     System.out.println(s);
                 }
 
@@ -365,68 +372,69 @@ public class GameController implements GameListener {
                 view.removeAllPieces();
                 view.initiateChessComponent(model);
                 view.repaint();
-                int a = Integer.parseInt(lines.get(lines.size()-1));
-                if(a%2==0)
-                    this.currentPlayer=PlayerColor.RED;
+                int a = Integer.parseInt(lines.get(lines.size() - 1));
+                if (a % 2 == 0)
+                    this.currentPlayer = PlayerColor.RED;
                 else
-                    this.currentPlayer=PlayerColor.BLUE;
+                    this.currentPlayer = PlayerColor.BLUE;
                 frame.loadStep(a);
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public boolean isRightForm(String in)
-    {
-        if(in.length()<4)
+
+    public boolean isRightForm(String in) {
+        if (in.length() < 4)
             return false;
-        String tmp=in.substring(in.length()-4,in.length());
-        if(!tmp.toLowerCase().equals(".txt"))
+        String tmp = in.substring(in.length() - 4, in.length());
+        if (!tmp.toLowerCase().equals(".txt"))
             return false;
         return true;
     }
-    public boolean isRightChessboard(List<String> Lines){
+
+    public boolean isRightChessboard(List<String> Lines) {
         boolean b = true;
         List<String> lines = new ArrayList<String>();
         for (int i = 0; i < Lines.size(); i++) {
             String l = Lines.get(i);
             lines.add(l);
         }
-        if(lines.size()>9)
+        if (lines.size() > 9)
             lines.remove(9);
-        if(lines.size()!=9)
+        if (lines.size() != 9)
             b = false;
         else {
             for (int i = 0; i < 9; i++) {
                 char[] test = lines.get(i).toCharArray();
-                if(test.length!=7)
+                if (test.length != 7)
                     b = false;
             }
         }
         return b;
     }
-    public boolean isRightChessPiece(List<String> lines){
+
+    public boolean isRightChessPiece(List<String> lines) {
         boolean b = true;
         for (int i = 0; i < 9; i++) {
             char[] test = lines.get(i).toCharArray();
             for (int j = 0; j < 7; j++) {
-                if(test[j]!='空'&&test[j]!='相'&&test[j]!='象'&&test[j]!='獅'&&test[j]!='狮'&&test[j]!='琥'
-                        &&test[j]!='虎'&&test[j]!='犳'&&test[j]!='豹'&&test[j]!='琅'&&test[j]!='狼'&&test[j]!='豿'
-                        &&test[j]!='狗'&&test[j]!='貓'&&test[j]!='猫'&&test[j]!='黍'&&test[j]!='鼠')
+                if (test[j] != '空' && test[j] != '相' && test[j] != '象' && test[j] != '獅' && test[j] != '狮' && test[j] != '琥'
+                        && test[j] != '虎' && test[j] != '犳' && test[j] != '豹' && test[j] != '琅' && test[j] != '狼' && test[j] != '豿'
+                        && test[j] != '狗' && test[j] != '貓' && test[j] != '猫' && test[j] != '黍' && test[j] != '鼠')
                     b = false;
             }
         }
         return b;
     }
-    public boolean hasCount(List<String> Lines){
-        boolean b = true;
-        if(Lines.size()==9){
-            b = false;
-        }
 
-        else if (Lines.size()>9&&Lines.get(9)!=null) {
+    public boolean hasCount(List<String> Lines) {
+        boolean b = true;
+        if (Lines.size() == 9) {
+            b = false;
+        } else if (Lines.size() > 9 && Lines.get(9) != null) {
             int count = Integer.parseInt(Lines.get(9));
-            if(count<1){
+            if (count < 1) {
                 b = false;
             }
 
@@ -436,10 +444,10 @@ public class GameController implements GameListener {
     }
 
     //悔棋操作
-    public void withdraw(){
-        if(this.PieceStep.size()==0){
+    public void withdraw() {
+        if (this.PieceStep.size() == 0) {
             frame.redoWrongHints();
-        }else {
+        } else {
             Step last = this.PieceStep.get(this.PieceStep.size() - 1);
             //删除PieceStep List中的最后一个
             this.PieceStep.remove(this.PieceStep.size() - 1);
@@ -470,7 +478,6 @@ public class GameController implements GameListener {
     }
 
 
-
     /* save方法
      * 1.
      * 2. 读取棋盘，将棋盘的棋子转化成相应的汉字，放在一个String类型的ArrayList数组里
@@ -480,22 +487,20 @@ public class GameController implements GameListener {
      * 6.
      * 7.
      * */
-    public void saveGameIntoFile(String path){
+    public void saveGameIntoFile(String path) {
         try {
             ArrayList<String> saveGame = new ArrayList<String>();
             saveGame = model.saveChessboardIntoFiles();
-            String s = this.StepCount+"";
+            String s = this.StepCount + "";
             saveGame.add(s);
             for (int i = 0; i < saveGame.size(); i++) {
                 System.out.println(saveGame.get(i));
             }
-            Files.write(Path.of(path),saveGame, Charset.defaultCharset());
-        }catch (IOException e){
+            Files.write(Path.of(path), saveGame, Charset.defaultCharset());
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 
 
 }

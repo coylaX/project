@@ -315,7 +315,6 @@ public class ChessGameFrame extends JFrame implements ActionListener {
             //直接关闭虚拟机
             System.exit(0);
         });
-        //TODO:如何播放暂停
         musicItem.addActionListener((e) -> {
             System.out.println("播放或者暂停音乐");
             if (clip.isRunning()) {
