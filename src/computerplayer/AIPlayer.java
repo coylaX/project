@@ -41,14 +41,20 @@ public class AIPlayer extends Thread {
     // 贪心
     private Step AIMoveMode2(PlayerColor color, int turn) {
         List<Step> steps = model.allLegalStepsIncludeValue(color);
+        Step re = null;
         //从大到小排序
         Collections.sort(steps);
         //打印value
+        int max = steps.get(0).getValue();
+        int n = 0;
         for (Step step : steps) {
             System.out.print(step.getValue() + " ");
+            if(step.getValue()==max)
+            n++;
         }
         System.out.println();
-        return steps.get(0);
+        re = steps.get((int) (Math.random() * n));
+        return re;
     }
 
 
