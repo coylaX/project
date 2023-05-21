@@ -33,6 +33,9 @@ public abstract class ChessPiece {
     }
 
 
+    public int getRank() {
+        return rank;
+    }
 
     public abstract boolean isValidMove(ChessboardPoint target);//不同棋子怎么move
 

@@ -144,11 +144,13 @@ public class Chessboard {
         }
         return saveChessboard;
     }
+
+    //根据坐标得到棋子
      public ChessPiece getChessPieceAt(ChessboardPoint point) {
         return getGridAt(point).getPiece();
     }
-                            //根据坐标得到棋子
 
+    //得到当前棋子的坐标
   public ChessboardPoint getChessPiecePointofJump(ChessPiece chessPiece){//得到棋子(狮或虎)当前坐标
         int a = 0;
         int b = 0;
@@ -162,24 +164,32 @@ public class Chessboard {
         ChessboardPoint wantedPoint = new ChessboardPoint(a,b);
         return wantedPoint;
     }
+
+    //根据坐标得到Cell
     private Cell getGridAt(ChessboardPoint point) {
         return grid[point.getRow()][point.getCol()];
     }
-                //根据坐标得到Cell
+
+
+    //计算两个格子之间相差多少步
     private int calculateDistance(ChessboardPoint src, ChessboardPoint dest) {
         return Math.abs(src.getRow() - dest.getRow()) + Math.abs(src.getCol() - dest.getCol());
     }
-                    //计算两个棋子之间还差多少步
-    private ChessPiece removeChessPiece(ChessboardPoint point) {//将某点的棋子移除掉，并返回这个坐标处的棋子
+
+
+    //将某点的棋子移除掉，并返回这个坐标处的棋子
+    private ChessPiece removeChessPiece(ChessboardPoint point) {
         ChessPiece chessPiece = getChessPieceAt(point);
         getGridAt(point).removePiece();
         return chessPiece;
     }
 
+
+    //在确定坐标处放入确定棋子
     private void setChessPiece(ChessboardPoint point, ChessPiece chessPiece) {
         getGridAt(point).setPiece(chessPiece);
     }
-                    //在确定坐标处放入确定棋子
+
     public void moveChessPiece(ChessboardPoint src, ChessboardPoint dest) {//移动给定坐标处的棋子
         if (!isValidMove(src,dest)) {
             throw new IllegalArgumentException("Illegal chess move!");
@@ -198,11 +208,15 @@ public class Chessboard {
     public Cell[][] getGrid() {
         return grid;
     }
+
+
     public PlayerColor getChessPieceOwner(ChessboardPoint point) {
         return getGridAt(point).getPiece().getOwner();
     }
 
 
+
+    //判断河流中是否有棋子阻断跳河
     public boolean isBlocked(ChessboardPoint src, ChessboardPoint dest){
         boolean b = false;
         if(src.getCol()==dest.getCol()){
@@ -237,13 +251,15 @@ public class Chessboard {
         return b;
     }
 
+
+    //判断是否是合法移动
     public boolean isValidMove(ChessboardPoint src, ChessboardPoint dest) {
         if (getChessPieceAt(src) == null || getChessPieceAt(dest) != null) {
             return false;
         }
-        else if(getChessPieceAt(src)!=null&&getChessPieceOwner(src)==PlayerColor.RED&& dest.isRedHen())
+        else if(getChessPieceAt(src)!=null&&getChessPieceOwner(src)==PlayerColor.RED&& dest.isRedDen())
             return false;
-        else if(getChessPieceAt(src)!=null&&getChessPieceOwner(src)==PlayerColor.BLUE&& dest.isBlueHen())
+        else if(getChessPieceAt(src)!=null&&getChessPieceOwner(src)==PlayerColor.BLUE&& dest.isBlueDen())
             return false;
         else if(!getChessPieceAt(src).isValidMove(dest))
             return false;
@@ -262,6 +278,8 @@ public class Chessboard {
         return calculateDistance(src, dest) == 1;
     }
 
+
+    //判断是否是合法捕捉
     public boolean isValidCapture(ChessboardPoint src, ChessboardPoint dest) {
         // TODO:Fix this method
         boolean b = false;
@@ -297,6 +315,8 @@ public class Chessboard {
         return b;
     }
 
+
+    //判断蓝方是否获胜
     public boolean isBLUEWin(){
         boolean b = true;
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
@@ -310,6 +330,8 @@ public class Chessboard {
             bb = true;
         return b||bb;
     }
+
+    //判断红方是否获胜
     public boolean isREDWin(){
         boolean b = true;
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
@@ -342,54 +364,108 @@ public class Chessboard {
         return p;
     }
 
-
-    public List<ChessboardPoint> getValidPoints(PlayerColor color){
-        List<ChessboardPoint> availablePoints = new ArrayList<>();
+    //得到当前玩家的所有棋子的坐标
+    public List<ChessboardPoint> theValidPoints(PlayerColor color){
+        List<ChessboardPoint> points = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 7; j++) {
                 ChessboardPoint point = new ChessboardPoint(i, j);
                 if (getChessPieceAt(point) != null && getChessPieceAt(point).getOwner() == color) {
-                    availablePoints.add(point);
+                    points.add(point);
                 }
             }
         }
-        return availablePoints;
+        return points;
     }
 
-
-    public List<Step> getValidSteps(PlayerColor color){
-        List<Step> availableSteps = new ArrayList<>();
-        List<ChessboardPoint> availablePoints = getValidPoints(color);
-        for (ChessboardPoint point : availablePoints) {
-            List<ChessboardPoint> validMoves = getValidMoves(point);
-            for (ChessboardPoint destPoint : validMoves) {
-                availableSteps.add(recordStep(point, destPoint, color, 0));
+    //得到所有合法移动的步
+    public List<Step> getValidSteps(PlayerColor color,int turn){
+        List<Step> allPossibleStep = new ArrayList<Step>();
+        List<ChessboardPoint> points = theValidPoints(color);
+        for (ChessboardPoint point : points) {
+            List<ChessboardPoint> allPossibleMoves = isPossibleMove(point);
+            for (ChessboardPoint destPoint : allPossibleMoves) {
+                Step s = new Step(point, destPoint, getChessPieceAt(point),
+                        getChessPieceAt(destPoint), color, turn);
+                allPossibleStep.add(s);
             }
         }
-        return availableSteps;
-    }
-    public Step recordStep(ChessboardPoint fromPoint, ChessboardPoint toPoint, PlayerColor currentPlayer, int turn){
-        ChessPiece fromPiece = getChessPieceAt(fromPoint);
-        ChessPiece toPiece = getChessPieceAt(toPoint);
-        Step step = new Step(fromPoint, toPoint, fromPiece, toPiece, currentPlayer, turn);
-//        System.out.println(step);
-        return step;
+        return allPossibleStep;
     }
 
 
-    public List<ChessboardPoint> getValidMoves(ChessboardPoint point) {
-        List<ChessboardPoint> availablePoints = new ArrayList<>();
-        // 检查整张棋盘，用isValidMove()方法检查每个格子是否可以移动到，同时也用isValidCapture()方法检查每个格子是否可以吃掉
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 7; j++) {
-                ChessboardPoint destPoint = new ChessboardPoint(i, j);
-                if (isValidMove(point, destPoint) || isValidCapture(point, destPoint)) {
-                    availablePoints.add(destPoint);
+    public List<Step> allLegalStepsIncludeValue(PlayerColor color){
+        List<Step> allLegalSteps = new ArrayList<Step>();
+        List<ChessboardPoint> allPossiblePoints = theValidPoints(color);
+        for (ChessboardPoint point : allPossiblePoints) {
+            List<ChessboardPoint> allPossibleMoves = isPossibleMove(point);
+            for (ChessboardPoint destPoint : allPossibleMoves) {
+                Step step =  new Step(point, destPoint, getChessPieceAt(point),getChessPieceAt(destPoint),
+                        color, 0);
+
+                //通过距离对方阵营和距离对方兽血的远近来量化value的大小
+                if (color == PlayerColor.RED) {
+                    step.setValue(destPoint.getRow() - point.getRow() + Math.abs(3 - point.getCol())
+                            - Math.abs(3 - destPoint.getCol()));//距离对方阵营的远近, 距离对方兽血的远近
+                } else {
+                    step.setValue(point.getRow() - destPoint.getRow() + Math.abs(3 - point.getCol())
+                            - Math.abs(3 - destPoint.getCol()));
                 }
+                //如果dest point里有棋子，value加dest棋子rank的平方
+                if (getChessPieceAt(destPoint) != null) {
+                    step.setValue(step.getValue() + getChessPieceAt(destPoint).getRank()*3);
+                }
+                //如果dest是蓝方的兽血，直接选择这一步
+                if (destPoint.isBlueDen()) {
+                    step.setValue(100);
+                }
+                //如果是蓝方的陷阱，则需要检查周围是否有蓝方棋子
+                if (destPoint.isBlueTrap()) {
+                    if (getChessPieceAt(destPoint) != null) {
+                        step.setValue(getChessPieceAt(destPoint).getRank()*2);
+                    } else {
+                        boolean b = false;//检查周围棋子
+                        ChessboardPoint p1 = new ChessboardPoint(destPoint.getRow()-1,destPoint.getCol());
+                        ChessboardPoint p2 = new ChessboardPoint(destPoint.getRow()+1,destPoint.getCol());
+                        ChessboardPoint p3 = new ChessboardPoint(destPoint.getRow(),destPoint.getCol()-1);
+                        ChessboardPoint p4 = new ChessboardPoint(destPoint.getRow(),destPoint.getCol()+1);
+                        if(p1.isOnChessboard()){
+                            if(getChessPieceAt(p1)!=null&&getChessPieceOwner(p1)==PlayerColor.BLUE){
+                                b = true;
+                                step.setValue(-10);
+                            }
+                        }
+                        if(p2.isOnChessboard()){
+                            if(getChessPieceAt(p1)!=null&&getChessPieceOwner(p1)==PlayerColor.BLUE){
+                                b = true;
+                                step.setValue(-10);
+                            }
+                        }
+                        if(p3.isOnChessboard()){
+                            if(getChessPieceAt(p1)!=null&&getChessPieceOwner(p1)==PlayerColor.BLUE){
+                                b = true;
+                                step.setValue(-10);
+                            }
+                        }
+                        if(p4.isOnChessboard()){
+                            if(getChessPieceAt(p1)!=null&&getChessPieceOwner(p1)==PlayerColor.BLUE){
+                                b = true;
+                                step.setValue(-10);
+                            }
+                        }
+                        if (!b) {
+                            step.setValue(100);
+                        }
+                    }
+                }
+                allLegalSteps.add(step);
             }
         }
-        return availablePoints;
+        return allLegalSteps;
     }
+
+
+
 
 
 }
