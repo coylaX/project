@@ -92,4 +92,6 @@ public class ChessboardPoint {
             b = true;
         return b;
     }
+
+
 }
