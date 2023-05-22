@@ -479,6 +479,7 @@ public class GameController implements GameListener {
                 view.repaint();
                 frame.redoStep();
             }
+            swapColor();
             this.currentPlayer = last.getCurrentPlayer();
         }
     }
