@@ -126,6 +126,12 @@ public class GameController implements GameListener {
                 // ？？？TODO: if the chess enter Dens or Traps and so on
                 //更新回合数
                 frame.viewCount();
+                if (win()) {
+                    if (model.isREDWin())
+                        frame.redWinDialog();
+                    else if (model.isBLUEWin())
+                        frame.blueWinDialog();
+                }
                 aiMove();
                 if (win()) {
                     if (model.isREDWin())
@@ -201,6 +207,12 @@ public class GameController implements GameListener {
                         frame.blueWinDialog();
                 }
                 aiMove();
+                if (win()) {
+                    if (model.isREDWin())
+                        frame.redWinDialog();
+                    else if (model.isBLUEWin())
+                        frame.blueWinDialog();
+                }
             } else if (selectedPoint != null && selectedPoint != point && !model.isValidCapture(selectedPoint, point)) {
                 frame.moveHints();
             }

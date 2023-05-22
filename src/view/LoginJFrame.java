@@ -145,7 +145,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 //需要把当前登录的用户名传递给游戏界面
                 ChessGameFrame mainFrame = new ChessGameFrame(1100, 810);
 
-                //TODO:自主选择mode to play,传入mode
+                //自主选择mode to play,传入mode
                 GameController gameController = new GameController(mainFrame.getChessboardComponent(), new Chessboard(),gameMode);
                 mainFrame.setGameController(gameController);
                 gameController.setFrame(mainFrame);
@@ -162,7 +162,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
                 showJDialog("用户名或密码错误");
             }
         } else if (e.getSource() == register) {
-            System.out.println("点击了登录按钮");
+            System.out.println("点击了注册按钮");
             //获取两个文本输入框中的内容
             String usernameInput = username.getText();
             String passwordInput = password.getText();
