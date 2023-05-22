@@ -218,16 +218,16 @@ public class ChessGameFrame extends JFrame implements ActionListener {
          redoDialog.setVisible(true);**/
     }
     public void wrong101Hint(){
-        JOptionPane.showMessageDialog(this, "文件格式错误，请重试！");
+        JOptionPane.showMessageDialog(this, "error101:文件格式错误，请重试！");
     }
     public void wrong102Hint(){
-        JOptionPane.showMessageDialog(this, "棋盘大小错误，请重试！");
+        JOptionPane.showMessageDialog(this, "error102:棋盘大小错误，请重试！");
     }
     public void wrong103Hint(){
-        JOptionPane.showMessageDialog(this, "棋子错误，请重试！");
+        JOptionPane.showMessageDialog(this, "error103:棋子错误，请重试！");
     }
     public void wrong104Hint(){
-        JOptionPane.showMessageDialog(this, "缺少回合数信息，请重试！");
+        JOptionPane.showMessageDialog(this, "error104:缺少回合数信息，请重试！");
     }
 
     private void addLoadButton() {

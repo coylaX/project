@@ -284,6 +284,7 @@ public class Chessboard {
         // TODO:Fix this method
         boolean b = false;
         boolean bb = false;//判断是否可移动
+        boolean bbb = true;
      if(getChessPieceAt(src).rank==7||getChessPieceAt(src).rank==6){//判断是否为能够跳河的动物
             if(src.isBesideRiver()){//判断是否在河边
                 if(src.getCol()== dest.getCol()){
@@ -301,7 +302,16 @@ public class Chessboard {
         }
 
 
-        if(getChessPieceOwner(src)!=getChessPieceOwner(dest)&&bb){
+
+     if(getChessPieceOwner(src)==PlayerColor.BLUE&&src.isRedTrap()){
+         bbb = false;
+     }
+     if(getChessPieceOwner(src)==PlayerColor.RED&&src.isBlueTrap()){
+         bbb = false;
+     }
+
+
+     if(getChessPieceOwner(src)!=getChessPieceOwner(dest)&&bb&&bbb){
             if(getChessPieceAt(src).rank>=getChessPieceAt(dest).rank
                     &&(!(getChessPieceAt(src).rank==8&&getChessPieceAt(dest).rank==1))&&!dest.isRiver())
                 b = true;
