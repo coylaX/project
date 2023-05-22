@@ -384,6 +384,7 @@ public class GameController implements GameListener {
                 else
                     this.currentPlayer = PlayerColor.BLUE;
                 frame.loadStep(a);
+                frame.viewCurrentPlayer();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
